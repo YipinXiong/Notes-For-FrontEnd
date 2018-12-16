@@ -539,3 +539,86 @@ As we demonstrated before, the most different part for *bind* is it will return 
 ![1544685842788](1544685842788.png)
 
 You can borrow the constructor from another constructor by using call/apply
+
+Diagram to illustrate the relationship between these  relationship: (circle is function; and squares are objects):
+
+  ![1544769025515](1544769025515.png)
+
+- Every constructor function has a property on it called  "prototype", which is an object
+- The prototype object has a property on it called "constructor", which points back to the constructor function
+- Anytime an object is created using the 'new' keyword, a property called "\_\_proto_\_" gets created, linking the object and the prototype property of the constructor function. 
+
+##  The prototype chain
+
+
+
+<center>     
+    <img style="border-radius: 0.3125em;     
+                box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 				rgba(34,36,38,.08);"      
+         src="1544912638153.png">     
+    <br>     
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;     					display: inline-block;     
+                color: #999;     
+                padding: 2px;">
+        How does JavaScript search for properties and methods
+    </div> 
+</center>
+
+It will look for the property or methods along the `__proto__` and repeat until there is not `__proto__`
+
+So, why do we need it? Let me show you a example:
+
+```javascript
+function Person(name) {
+    this.name = name;
+    this.sayHi = function (){
+        return "Hi " + this.name;
+    }
+}
+```
+
+This constructor function is inefficient. Every time we make an object using the `new` keyword we have to redefine the `sayHi` function!
+
+To handle this issue, we can add this method into the `prototype` instead.
+
+```javascript
+Person.prototype.sayHi = function() {
+    return 'Hi '+ this.name;			 
+}
+```
+
+
+
+## Inheritance
+
+> Please differentiate inheritance and prototype chain during the interview! They are totally two different things!
+
+
+
+As I mentioned in the last section, we define the `Person` constructor function; we can borrow the constructor function from `Person` when building new `Student` constructor function.
+
+However, we have defined the `sayHi` method on `Person`'s `prototype`. `Student` doesn't get this method from `Person` 
+
+(recall what `apply` does when `new` keyword was being used and the 4 steps in object creation process)
+
+![ 1544918198561](1544918198561.png)
+
+If you did this way, `Person` would be influenced; since then, all new instances of Person will be impacted. Because object is passed by reference! 
+
+The solution is to create an copy `prototype` to the prototype of `Student`
+
+![1544918411291](1544918411291.png)
+
+
+
+>Why not '`new`'?
+>
+>![1544921477830](1544921477830.png)
+>
+>This will do almost the same thing, but add additional unnecessary properties on the prototype object (since it is creating an object with undefined properties just for the prototype)
+
+
+
+Finally, don't forget to reset the constructor pointer!
+
+`Student.prototype.constructor = Student` (You have set the prototype as `Person's prototype`)
