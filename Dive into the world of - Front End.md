@@ -2,14 +2,6 @@
 
 # Animations
 
-
-
-There are some simple markdown syntaxes that you need to acquire as prerequisites.
-
-Here are the key points:
-
-![1544150266067](C:\Users\xiong\AppData\Roaming\Typora\typora-user-images\1544150266067.png)
-
 The main difference between :active and :focus is that "focus" is a persistent state, while :active just a moment.
 
 ## What's the *transform* doing in CSS3?
