@@ -417,7 +417,15 @@ As you can see, the recommendation paradigm is a great example to illustrate how
 
 Automatically transform to json!!
 
-![1544487917601](1544487917601.png)
+```javascript
+axios.get(url)
+.then(function(res){
+    console.log(res.data);
+})
+.catch( function(e){
+    console.log(e);
+})
+```
 
 You don't need jQuery if you just wanna use AJAX.
 
@@ -605,7 +613,13 @@ The solution is to create an copy `prototype` to the prototype of `Student`
 
 >Why not '`new`'?
 >
->![1544921477830](1544921477830.png)
+>```javascript
+>function Student(firstName, lastName) {
+>    return Person.apply(this, arguments);
+>}
+>
+>Student.prototype = new Person;
+>```
 >
 >This will do almost the same thing, but add additional unnecessary properties on the prototype object (since it is creating an object with undefined properties just for the prototype)
 
@@ -614,3 +628,244 @@ The solution is to create an copy `prototype` to the prototype of `Student`
 Finally, don't forget to reset the constructor pointer!
 
 `Student.prototype.constructor = Student` (You have set the prototype as `Person's prototype`)
+
+### `exports`  usage
+
+When writing the Node.js code; they is a pretty concise way to write routes
+
+```javascript
+/*use express.js*/
+router.route('/')
+	.get(helpers.getTodos)
+	.post(helpers.createTodos)
+
+router.route('/:todoId')
+	.get(helpers.getToDo)
+	.put(helpers.updataTodo)
+	.delete(helpers.deleteTodo)
+
+/* This is another file and folder that segregates all routes and refactors your code*/
+
+//handling logic in callback
+exports.getTodos = callback 
+```
+
+
+
+If you wanna use a `static file in Nodejs`; add following path to express:
+
+```javascript
+var express = require('express'),
+	app = express();
+	
+app.use（express.static(__dirname + '/views'）
+```
+
+
+
+> **Note that there is a pretty common issue we need to handle is all listeners are applying even to dynamically generated code**
+
+
+
+# ES6
+
+## Main Additions
+
+There are great e-book about ES2015
+
+[Understanding ECMAScript 6](https://github.com/nzakas/understandinges6)
+
+### let, const
+
+You cannot declare a `const` variable without initialization; `const` a object whose properties can be changed. `let` variables' values can changed and reassigned. No hoisting effect (*<u>It does hoist, but it is in a TDZ so we can not access it</u>*) as `var` does. 
+
+### template strings (literals)
+
+> You can set `tag` function to handle this literals, which just likes what `haskell` does. For  more details, please read the e-books I mentioned above.
+
+### Arrow Functions
+
+you can omit `return`
+
+```javascript
+var add = (a,b) => {
+    return a+b;
+}
+
+var add = (a,b) => a+b;
+```
+
+1. Arrow functions do not get their own `this` keyword
+
+2. Inside of an arrow function, the keyword `this` has its original meaning from <u>the enclosing context</u>. 
+
+   > *Recall: As mentioned before, when normal functions run, their `this` and `arguments` parameters will be set. But this is not the case for arrow function.*
+
+3. The fact that arrow functions do not have their own `this` keyword can be quite helpful - you just need to understand when you might NOT want that!
+
+Here let's review the concept of closure combined with arrow functions to see how `this` weird feature can help us.
+
+```javascript
+var instructor = {
+    firstName: "Yipin",
+    sayHi: function(){
+        setTimeout(function(){
+            console.log("Hello " + this.firstName);
+        }, 1000);
+    }
+}
+
+instructor.sayHi(); // "Hello undefined"
+
+/* ↓↓↓ To handle this, we use closure ↓↓↓ */
+
+var instructor = {
+    firstName: "Yipin",
+    sayHi: function(){
+        setTimeout(function(){
+            console.log("Hello " + this.firstName);
+        }.bind(this), 1000);
+    }
+}
+
+instructor.sayHi(); // "Hello Yipin"
+
+/* Refactor code more concise by the feature of arrow function */
+var instructor = {
+    firstName: "Yipin",
+    sayHi: function(){
+        setTimeout(() => {
+            console.log("Hello " + this.firstName);
+        }, 1000);
+    }
+}
+
+instructor.sayHi(); // "Hello Yipin"
+
+/* 
+	Arrow functions do not have their own keyword this.  The keyword this 		refers to its enclosing context (the instructor object).
+	
+	Note that we cannot use arrow function in sayHi property.
+	In the code below, `this` keyword refers to the global context 
+	(window object)
+*/
+
+var instructor = {
+    firstName: "Yipin",
+    // can't use an arrow function here
+    sayHi: () => {
+        setTimeout(() => {
+            console.log("Hello " + this.firstName);
+        }, 1000);
+    }
+}
+
+instructor.sayHi(); // "Hello undefine"
+
+/*
+	Actually, arrow functions should never be used as methods in objects
+*/
+
+```
+
+```javascript
+let createStudentObj = 
+    (firstName, lastName) => ({firstName:firstName, lastName:lastName});
+
+//return a object and how it can be used
+```
+
+
+
+What is spread?
+
+```javascript
+var arr = [3,2,4,1,5];
+Math.max(arr); //NaN
+Math.max.apply(this, arr); //5
+Math.max(...arr); //5
+```
+
+
+
+### default parameters
+
+when nothing is passed into the function, we can use default parameters
+
+```javascript
+function add(a=2,b=2){
+    return a+b
+}
+```
+
+### rest and spread operators
+
+```javascript
+function printRest(a,b,...c){
+    console.log(a);
+    console.log(b);
+    console.log(c); //no ... here!!
+}
+
+printRest(1,2,3,4,5); 
+
+// 1
+// 2
+// [3,4,5]
+
+//Here is a comparision:
+// ES5
+function sumArguments(){
+    var total = 0;
+    for(var i = 0; i < arguments.length; i++){
+        total += arguments[i];
+    }
+    return total;
+}
+
+// A little fancier ES5; note that `arugments` is not an array.
+function sumArguments(){
+    var argumentsArray = [].slice.call(arguments);
+    return argumentsArray.reduce(function(accumulator,nextValue){
+        return accumulator + nextValue;
+    });
+}
+
+/* ES2015; arrow functions dont have this and arguments while you can use rest operator.*/
+
+var sumArguments = (...args) => args.reduce((acc, next) => acc + next);
+```
+
+
+
+### for...of loops
+
+```javascript
+var arr = [1,2,3];
+for(let val of arr){
+    console.log(val);
+}
+```
+
+However, we cannot use a for loop to iterate over an object. (because arr.\__proto__ has a property called Symbol.iterator which does not exist in object)
+
+
+
+> To summarize,  `of` can only be used on data structures with a Symbol.iterator method implemented!
+
+
+
+
+- object shorthand notation
+- computed property names
+- object destructuring
+- array destructuring
+- class keyword
+- super and extends keywords
+- Maps / Sets
+- Promises
+- Generators
+- Object, Number, Array methods
+
+
+
