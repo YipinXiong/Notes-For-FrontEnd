@@ -22,7 +22,11 @@ Three main transform function:
 
 - **rotate**
 
-![1544173433025](1544173433025.png)
+```css
+div {
+    transform: rotate(45 deg);
+}
+```
 
 
 
@@ -30,7 +34,7 @@ Three main transform function:
 
 It's quite self-explanatory. However, you can set the 坐标原点 (origin) by an attribute - *transform-origin* **x** **y** 
 
-The default origin is the 几何中心. Also, you can set the origin by the *directions*, such as bottom, top and left etc. For more details, please check the official document on MDN.
+The default origin is the "center". Also, you can set the origin by the *directions*, such as bottom, top and left etc. For more details, please check the official document on MDN.
 
 
 
@@ -57,13 +61,14 @@ This allows us to control the speed of transformation. There are four properties
 
 By default, every change is transition. In some cases, we don't want to all changes sharing the same transition-duration. Here comes the *transition-property* : you can assign or point out which property to do the transition. (1, 2 can be combined together one by one):
 
+```css
+div {
+    transition-property: background, border-radius;
+ 	transition-duration: 5s, 1s;
+}
+```
 
-
-
-
-![map](1544183056610.png)
-
-shorthand transitions ![ shorthand for transitions ](1544183598976.png)
+​	 ![ shorthand for transitions ](1544183598976.png)
 
 
 
@@ -104,8 +109,6 @@ The first time must be duration, while the second is delay.
 The animation name can be placed as you want.
 
 Exploring CodePen where you can find several demos for loading.
-
- 
 
 # Layouts in CSS - Flexbox, Grid Layout
 
@@ -501,7 +504,7 @@ So, inside a function this will not change.
 
 Here, divs = getElementsByTagName('div'); it's not an array, but an array-like object.
 
-##### When do we use 'apply'?
+##### When do we use 'appl	y'?
 
 ![1544502327621](1544502327621.png)
 
@@ -521,11 +524,90 @@ As we demonstrated before, the most different part for *bind* is it will return 
 
 #### Why do we use 'strict' mode?
 
-- prevent us create a global variable unconsciously.
+to prevent us to creating a global variable unconsciously
 
-​             
+# Useful Built-in Array functions
 
-# Object Oriented Programming
+###  forEach
+
+`forEach` always returns `undefined` !
+
+```javascript
+var arr = [1,2,3];
+
+arr.forEach((val, index, array) => {
+	console.log(val);    
+});
+
+// 1
+// 2
+// 3return
+// undefine
+```
+
+
+
+### map
+
+`map` Always returns a new array of the same length.
+
+> These callback function follows the same pattern function callback(value, index, array) 
+>
+> You can use `forEach` to overwrite the values :
+>
+> ```javascript
+> arr.forEach((val, index, array) => array[index] = val*2);
+> ```
+>
+> While `map` always returns a brand-new array back!
+
+
+
+###  filter
+
+*creates a new array*
+
+The result of the callback will always be a boolean
+
+
+
+### some
+
+the result of the callback will always be valued as Boolean.
+
+
+
+### reduce
+
+**The idea behind `reduce` is that we can take an array and turn it into another data structure**
+
+whatever is returned from the callback function, becomes the new value of the accumulator!
+
+
+
+![1545230183497](1545230183497.png)
+
+
+
+> P.S. if you wanna check whether some property exists in a object; you can use `hasOwnProperty` or `in` ;
+
+
+
+### every
+
+
+
+### splice
+
+**The idea behind `splice` is that we can *manipulate* the array; like insert, remove.**
+
+### slice
+
+The idea behind `slice` is that we need a copy of 
+
+
+
+#  Object Oriented Programming
 
 ##  The function of 'new' key word
 
@@ -607,9 +689,9 @@ If you did this way, `Person` would be influenced; since then, all new instances
 
 The solution is to create an copy `prototype` to the prototype of `Student`
 
-![1544918411291](1544918411291.png)
-
-
+```javascript
+Student.prototype = Object.create(Person.prototype);
+```
 
 >Why not '`new`'?
 >
@@ -775,7 +857,9 @@ let createStudentObj =
 //return a object and how it can be used
 ```
 
+Arrow functions have no `this` binding, which means the value of `this` inside an arrow function can only be determined by looking up the scope chain. If the arrow function is contained within a nonarrow function, `this` will be the same as the containing function; otherwise, `this` is equivalent to the value of `this` in the global scope.
 
+> Also, since the `this` value is determined by the containing function in which the arrow function is defined, you cannot change the value of `this` using `call()`, `apply()`, or `bind()`.
 
 What is spread?
 
@@ -790,13 +874,45 @@ Math.max(...arr); //5
 
 ### default parameters
 
-when nothing is passed into the function, we can use default parameters
+When nothing or intentionally undefined passes into the function, we can use default parameters
 
 ```javascript
 function add(a=2,b=2){
     return a+b
 }
 ```
+
+> Just keep in mind that the behavior of the `arguments` object is different when default parameter values are present
+>
+> `arguments` object actually refers to the `parameters` rather than the values
+
+*The presence of default parameter values triggers the `arguments` object to remain detached from the named parameters.* This is a subtle but important detail because of how the `arguments` object may be used. Consider the following:
+
+```javascript
+function mixArgs(first, second = "b") {
+    console.log(arguments.length);
+    console.log(first === arguments[0]);
+    console.log(second === arguments[1]);
+    first = "c";
+    second = "d"
+    console.log(first === arguments[0]);
+    console.log(second === arguments[1]);
+}
+
+mixArgs("a");
+
+/* 
+outputs:
+
+1
+true
+false
+false
+false
+*/
+```
+
+In this example, <u>`arguments.length` is 1</u> because only one argument was passed to `mixArgs()`. That also means `arguments[1]`is `undefined`, which is the expected behavior when only one argument is passed to a function. That means `first` is equal to `arguments[0]` as well. Changing `first` and `second` has no effect on `arguments`. This behavior occurs in both `nonstrict` and `strict` mode, **so you can rely on `arguments` to always reflect the initial call state.**
 
 ### rest and spread operators
 
@@ -836,6 +952,55 @@ function sumArguments(){
 var sumArguments = (...args) => args.reduce((acc, next) => acc + next);
 ```
 
+> **Note that rest and spread cannot convert String to char array!**
+
+
+
+Here is how to use `rest` operator which spreads the value from an array
+
+```javascript
+function sumValues(a,b,c){
+    return a+b+c;
+}
+
+var nums = [12,15,20];
+
+//ES5
+sumValues.apply(this, nums);
+
+//ES2015
+sumValues(...nums);
+```
+
+>  Note 1: `Rest` parameters <u>do not affect a function's `length` property</u>, which indicates the number of named parameters for the function. The value of `length` for `pick()` in this example is 1 because only `object` counts towards this value.
+
+> Note 2: There are two restrictions on rest parameters:
+>
+> The first restriction is that there can be only one rest parameter, and the rest parameter must be last
+>
+> ```javascript
+> // Syntax error: Can't have a named parameter after rest parameters
+> function pick(object, ...keys, last) {
+>     //...
+> }
+> ```
+>
+> The second restriction is that rest parameters cannot be used in an object literal setter. That means this code would also cause a syntax error:
+>
+> ```javascript
+> let object = {
+> 
+>     // Syntax error: Can't use rest param in setter
+>     set name(...value) {
+>         // do something
+>     }
+> };
+> 
+> /* This restriction exists because object literal setters are restricted to a single argument.*/	 
+> ```
+
+
+
 
 
 ### for...of loops
@@ -857,15 +1022,149 @@ However, we cannot use a for loop to iterate over an object. (because arr.\__pro
 
 
 - object shorthand notation
+
+```javascript
+var firstName = "Elie";
+var lastName = "Schoppik";
+
+// ES5
+var instructor = {
+    firstName: firstName,
+    lastName: lastName
+}
+
+var firstName = "Elie";
+var lastName = "Schoppik";
+
+// ES2015
+var instructor = {
+    firstName,
+    lastName
+}
+
+```
+
+
+
+For Object method:
+
+```javascript
+// ES5
+var instructor = {
+    sayHello: function(){
+        return "Hello!";
+    }    
+}
+
+// ES2015 - do NOT use arrow functions here!
+var instructor = {
+    sayHello(){
+        return "Hello!";
+    }
+}
+```
+
+
+
+
 - computed property names
+
+```javascript
+// ES5
+var firstName = "Elie";
+var instructor = {};
+instructor[firstName] = "That's me!";
+
+instructor.Elie; // "That's me!"
+
+// ES2015
+var firstName = "Elie";
+var instructor = {
+    [firstName]: "That's me!"
+}
+
+instructor.Elie; // "That's me!"
+```
+
+
+
+
 - object destructuring
+
+extracting values from data stored  in objects a array
+
+```javascript
+var instructor = {
+    firstName: "Elie",
+    lastName: "Schoppik"
+}
+
+var {firstName, lastName} = instructor;
+
+firstName; // "Elie"
+lastName; // "Schoppik"
+
+/* 	The compromise of the code above is that the unpacked variables' names 		must be identical to the instructor's property names;
+	You can rename it by semicolon
+*/
+
+var {firstName:first, lastName:last} = instructor;
+
+first; // "Elie"
+last; // "Schoppik"
+
+```
+
+```javascript
+/* Here is another example showing the power of destructuring and defalut  value */
+function createInstructor({name = {first:"Matt", last:"Lane"}, isHilarious=false } = {}){
+    return [name.first, name.last, isHilarious];
+}
+
+/*
+set the defalt parameter as empty object; if it is, the default value for `name` is `{first:"Matt", last:"Lane"} and the default value for `isHilarious` is `false`
+*/
+```
+
+
+
+
 - array destructuring
+
+```javascript
+var arr = [1,2,3];
+
+var [a,b,c] =6565555555555555555555555 arr;
+
+a; // 1
+b; // 2
+c; // 3 
+
+//very tricky one
+
+// ES2015
+function swap(a,b){
+    return [a,b] = [b,a];
+}
+
+swap(10,5); // [5,10]
+
+//reverseArray without creating new array;
+function reverseArray(arr){
+  for(var i = 0; i < arr.length/2; i++){
+    [arr[i], arr[arr.length - 1 - i]] = [arr[arr.length - 1 - i], arr[i]]
+  }
+  return arr;
+}
+```
+
+
+
+
 - class keyword
 - super and extends keywords
 - Maps / Sets
 - Promises
 - Generators
 - Object, Number, Array methods
-
-
 
