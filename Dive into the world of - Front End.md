@@ -16,7 +16,11 @@ Three main transform function:
 
 - **Translate** 
 
-![1544172499344](1544172499344.png)
+```css
+div {
+    transform: translateX(100px);
+}
+```
 
 *translate* can take two parameters, one for **x**, one for **y**.
 
@@ -72,7 +76,16 @@ div {
 
 
 
-what should be transitioned? ![alt](1544184713332.png)
+### What should be transitioned? 
+
+1. transform: translate();
+2. transform: scale();
+3. transform: rotate();
+4. opacity
+
+
+
+
 
 Since there are so many properties supporting transition. But in terms of efficiency, only above four properties should be transitioned. There is a great article for extended material.
 
@@ -122,17 +135,7 @@ Whenever you need to review the layout knowledge, you can go into these two webs
 
 [A complete guide to grid layout](https://css-tricks.com/snippets/css/complete-guide-grid/)
 
-Or you can search 阮一峰
 
-
-
-其实你可以在简书上面学习写一些技术性翻译，这样就可以得到点赞了！把自己也混淆的概念给翻译出来；自己也加深了印象，又练习了英语：
-
-There are some topics you can translate in the future:
-
-- [ ]  property vs attributes
-- [ ]  Closure
-- [ ]  CSS layouts
 
 OK, let's go back to the "flex box"; there are some terminologies you need to be familiar beforehand:
 
@@ -192,8 +195,12 @@ Here you need @**media** key word. media queries
 
 ![1544416107833](1544416107833.png)
 
-- *flex-grow* : dictates how **the unused space** should be spread amongst flex items (给其中一个item两倍于另外的items; 如果不设置这个property，items will not share the free space!) 注意，这个分的是idle space，而不是真正的比例！
-- *flex-shrink* : dictates how items should shrink when there isn't enough space in container. 缩小的比例！One of most common uses is shrinking items with different ratios. (For instance, the middle one will shrink as slower twice as the two edges ones. 中间缩小的慢, 两边缩小的快) 
+- *flex-grow* : dictates how **the unused space** should be spread amongst flex items (if you don't set this property，items will not share the free space.) 
+
+  >  Note that here is setting the idle space rather than the real ratio!
+
+- *flex-shrink* : dictates how items should shrink when there isn't enough space in container. One of most common uses is shrinking items with different ratios. (For instance, the middle one will shrink as slower twice as the two edges ones.) 
+
 - *flex-basis* : specifies the ideal size of a flex item before it's placed into a flex container (initial width) [Difference between flex-basis and width](http://gedd.ski/post/the-difference-between-width-and-flex-basis/)
 
 
@@ -278,7 +285,20 @@ There are some very useful advanced methods built in the array; here I just list
 
 An area in memory where your data is stored
 
-![1544425935999](1544425935999.png)
+
+
+```javascript
+/* The object is created in the heap. obj is a refence to the object*/
+
+var obj = {firstName: "Tim",
+         	lastName: "Garcia"};
+
+// New data is not created, only a copy of the reference
+var referenceCopy = obj;
+
+```
+
+
 
 
 
@@ -367,9 +387,23 @@ new XMLHttpRequest() must be put into the click listener! Because you need to in
 
 - fetch API
 
-fetch supports Promises!
+fetch supports `Promises`
 
-![1544478369783](1544478369783.png)
+```javascript
+fetch(url, {
+    method: 'Post',
+    body: JSON.stringify({
+        name: 'blue',
+        login: 'bluecat',
+    })
+})
+    .then(function (data) {
+    //do something
+})
+    .catch(function (err) {
+    //handle errors
+})
+```
 
 
 
@@ -383,7 +417,21 @@ Even though you made a 404 response, however, you still cannot catch that error!
 
 Thus, the correct way to handle 404 is :
 
-![1544478970222](1544478970222.png)
+```javascript
+fetch(url)
+    .then(function(res) {
+    if(!res.ok) {
+        throw Error(404); //up to you
+    }
+    return res;
+}).then(function(response){
+    console.log("ok");
+}).catch(function(error) {
+    console.log(error);
+})
+```
+
+
 
 There is a great paradigm to handle error, here is the code:
 
@@ -408,9 +456,21 @@ function handleErrors (request){
   }
   return request;
 }
+
 ```
 
-![1544479677260](1544479677260.png)
+
+
+```javascript
+//There is a paradigm you can use
+fetch(url)
+.then(handleErrors)
+.then(parseJSON)
+.then(updateProfile)
+.catch(printError)
+```
+
+
 
 As you can see, the recommendation paradigm is a great example to illustrate how to make you code clear and meaningful. Every layer has its own function.
 
@@ -438,13 +498,20 @@ There is built-in error-handling mechanism in axios err.response and err.request
 
 
 
-# Closure and this keyword
+# `Closure` and `this` keyword
 
-![1544489978450](1544489978450.png)
+```javascript
+function outer() {
+    var start = "Closures are"
+    return function inner() {
+        return start + " " + "awesome"
+    }
+}
+```
 
-closure don't remember everything from an outer function - just the variables they need!
+`Closure` don't remember everything from an outer function - just the variables they need!
 
-Closures mean that inner function makes use of the variable from outer function while the outer function has returned.
+`Closure`s mean that inner function makes use of the variable from outer function while the outer function has returned.
 
 The most commonly use case of closure is to create private / immutable variable.
 
@@ -1160,11 +1227,206 @@ function reverseArray(arr){
 
 
 
+### class keyword
 
-- class keyword
-- super and extends keywords
-- Maps / Sets
-- Promises
-- Generators
-- Object, Number, Array methods
+- The `class` keyword creates a constant - can not be redeclared
+
+- The `class` keyword does not hoist
+
+```javascript
+class Student { 
+    constructor(firstName, lastName){
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    // under the hood, it is placing methods on the prototype object
+    sayHello(){
+        return `Hello ${this.firstName} ${this.lastName}`;
+    }
+    
+    // New `static` keyword
+    static isStudent(obj) {
+        return obj.constructor === Student;
+    }
+}
+```
+
+
+
+
+
+### Inheritance - `super` and `extends` keywords
+
+It is a syntax sugar for previous `Object.create(someClass.prototype)`
+
+These two keywords are very similar to Java or other OOP language.
+
+```javascript
+class Student extends Person { 
+    constructor(firstName, lastName){
+        // you must use super here!
+        super(firstName, lastName);
+    }
+}
+```
+
+### Maps / Sets
+
+These are two new-added data structures. These two data structures are similar to other OOPs'
+
+Here I will list the different parts and when we need them.
+
+The keys of `map` and `set` in JavaScript can be **any type**. And `map` and `set` support `forEach` method. 
+
+```javascript
+//maps implement a Symbol.iterator which means we can use a for...of loop!
+var firstMap = new Map;
+firstMap.values(); // MapIterator object of values
+firstMap.keys(); // MapIterator object of keys
+// Above two methods return MapIterator object that implements the 
+// Symbol.iterator; thus, to convert them into array using `Array,from()` 
+
+//we can access everything with .entries() and destructuring!
+var m = new Map;
+m.set(1, 'Elie');
+m.set(2, 'Colt');
+m.set(3, 'Tim');
+
+for(let [key,value] of m.entries()){
+    console.log(key, value);
+}
+
+// 1 "Elie"
+// 2 "Colt"
+// 3 "Tim"
+
+```
+
+
+
+#### why we need it?
+
+1. Finding the size is easy  - no more loops or Object.keys()
+
+2. The keys can be any data type!
+
+3. You can accidentally overwrite keys on the Object.prototype in an object you make - maps do not have that issue
+
+4. Iterating over keys and values in a map is quite easy as well
+
+
+
+#### when to use it?
+
+1. look up keys dynamically (they are not hard coded strings)
+
+2. keys that are not strings!
+
+3. frequently adding and removing key/value pairs
+
+4. operating on multiple keys at a time
+
+
+
+### Promises
+
+ `Promise.all` is the commonly used methods:
+
+(Use this method to handle multiple ajax requests!)
+
+- Accepts an array of promises and resolves all of them or rejects once a single one of the promises has been first rejected (fail fast).
+
+- If all of the passed-in promises fulfill, Promise.all is fulfilled with an array of the values from the passed-in promises, in the same order as the promises passed in.
+
+- The promises don't resolve sequentially, but Promise.all waits for them
+
+```javascript
+Promise.all([titanicPromise, shrekPromise, braveheartPromise]).then(function(movies){
+    return movies.forEach(function(value){
+        console.log(value.Year);
+    });
+});
+
+// 1997
+// 2001
+// 1995
+```
+
+
+
+
+
+### Generators
+
+#### What is `generator`?
+
+A special kind of function which can pause execution and resume at any time. It is created using a *.  When invoked, a `generator` object is returned to us with the keys of `value` and `done`: 
+
+- ` Value` is what is returned from the paused function using `yield` keyword.
+
+- `Done` is a boolean which returns true when the function has completed.
+
+```javascript
+function* pauseAndReturnValues(num){
+    for(let i = 0; i < num; i++){
+		yield i;
+    }
+}
+
+var gen = pauseAndReturnValues(5);
+gen.next(); // {value: 0, done: false}
+gen.next(); // {value: 1, done: false}
+gen.next(); // {value: 2, done: false}
+gen.next(); // {value: 3, done: false}
+gen.next(); // {value: 4, done: false}
+gen.next(); // {value: undefined, done: true}
+
+// We can place multiple yield keywords inside of a generator function to pause multiple times! (return multiple times)
+function* printValues(){
+    yield "First";
+    yield "Second";
+    yield "Third";
+}
+
+var g = printValues();
+g.next().value; // "First"
+g.next().value; // "Second"
+g.next().value; // "Third"
+```
+
+> Note that generators implement `Symbol.iterator`, thus, you can use `"let .. of.."`  
+
+### Object, Number, Array methods
+
+`Object.assign` shadow copy a object rather than reference. 
+
+```javascript
+// ES2015
+
+var o = {instructors: ["Elie", "Tim"]};
+var o2 = Object.assign({},o);
+
+o2.instructors.push("Colt");
+
+o.instructors; // ["Elie", "Tim", "Colt"];
+/* If we have objects inside of the object we are copying - those still have a reference! */
+```
+
+
+
+`Array.from` converts array-like-objects into arrays.
+
+
+
+```javascript
+//Check whether val is a number
+//In ES5, typeof NaN === "number"
+typeof val === "number" && !isNaN(val)
+// To handle this issue, ES6 introduces a staic method - Number.isFinite to //check
+
+```
+
+![1545808862044](imgs/1545808862044.png)
+
+
 
