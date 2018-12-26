@@ -8,7 +8,7 @@ The main difference between :active and :focus is that "focus" is a persistent s
 
 
 
-![1544171980070](1544171980070.png)
+![1544171980070](imgs/1544171980070.png)
 
 
 
@@ -36,7 +36,7 @@ div {
 
 - **scale**
 
-It's quite self-explanatory. However, you can set the 坐标原点 (origin) by an attribute - *transform-origin* **x** **y** 
+It's quite self-explanatory. However, you can set the origin by an attribute - *transform-origin* **x** **y** 
 
 The default origin is the "center". Also, you can set the origin by the *directions*, such as bottom, top and left etc. For more details, please check the official document on MDN.
 
@@ -72,7 +72,7 @@ div {
 }
 ```
 
-​	 ![ shorthand for transitions ](1544183598976.png)
+​	 ![ shorthand for transitions ](imgs/1544183598976.png)
 
 
 
@@ -101,9 +101,9 @@ Since there are so many properties supporting transition. But in terms of effici
 
 Steps:
 
-![1544189086576](1544189086576.png)
+![1544189086576](imgs/1544189086576.png)
 
-![1544189123269](1544189123269.png)
+![1544189123269](imgs/1544189123269.png)
 
  Besides the properties above, there are some new properties that deserves highlighting:
 
@@ -139,7 +139,7 @@ Whenever you need to review the layout knowledge, you can go into these two webs
 
 OK, let's go back to the "flex box"; there are some terminologies you need to be familiar beforehand:
 
-![1544322930502](1544322930502.png)
+![1544322930502](imgs/1544322930502.png)
 
 >  Note that you can change the directions of the axis.
 
@@ -159,7 +159,7 @@ OK, let's go back to the "flex box"; there are some terminologies you need to be
 
   Alternatives:*flex-start/ stretch/ flex-end/ center*
 
-    ![1544326668724](1544326668724.png)
+    ![1544326668724](imgs/1544326668724.png)
 
   - **align-content** defines how space is distributed <span style="color: orange"> between rows</span> in flex container <span style="color:blue">*along the cross axis*</span>; this will be used in the scenarios where you wrap items into multiple rows. 
 
@@ -193,7 +193,7 @@ Here you need @**media** key word. media queries
 
 *flex*: defines how a flex item will grow or shrink to fit the available space in a container (shorthand property for 3 other properties)
 
-![1544416107833](1544416107833.png)
+![1544416107833](imgs/1544416107833.png)
 
 - *flex-grow* : dictates how **the unused space** should be spread amongst flex items (if you don't set this property，items will not share the free space.) 
 
@@ -277,7 +277,7 @@ There are some very useful advanced methods built in the array; here I just list
 
 
 
-![1544425766710](1544425766710.png)  
+![1544425766710](imgs/1544425766710.png)  
 
 
 
@@ -342,7 +342,7 @@ If the **stack is empty**, the front of the queue is placed in the stack
 
 
 
-![1544436088500](1544436088500.png)
+![1544436088500](imgs/1544436088500.png)
 
 So, the console log will be "4" -> "Callback blablabla"
 
@@ -517,7 +517,7 @@ The most commonly use case of closure is to create private / immutable variable.
 
 > Note that if you wanna maintain an array in a function, do not forget to manipulate the array while return the **array.slice()**. (Copy)  Here is the case: 
 >
-> ![1544491021888](1544491021888.png)
+> ![1544491021888](imgs/1544491021888.png)
 
 
 
@@ -527,7 +527,7 @@ this  = execution context (an object)
 
 
 
-> ![1544497823024](1544497823024.png)
+> ![1544497823024](imgs/1544497823024.png)
 >
 > The tricky here is that a keyword *this* is defined when a function is run! There is not a function being run here to create a new value of the keyword *this* so the value of *this* is still the *window*!
 
@@ -563,29 +563,29 @@ So, inside a function this will not change.
 
 > invoked immediately means the function sets the *call* method will be invoked without delay, like theFunction():
 >
-> ![1544499000509](1544499000509.png)
+> ![1544499000509](imgs/1544499000509.png)
 
 
 
-![1544499135616](1544499135616.png)
+![1544499135616](imgs/1544499135616.png)
 
 Here, divs = getElementsByTagName('div'); it's not an array, but an array-like object.
 
 ##### When do we use 'appl	y'?
 
-![1544502327621](1544502327621.png)
+![1544502327621](imgs/1544502327621.png)
 
 *apply* will help us spread out values if the function only takes individual parameters as parameters.
 
 ##### When  do we use 'bind'?
 
-![1544503409727](1544503409727.png)
+![1544503409727](imgs/1544503409727.png)
 
 As we demonstrated before, the most different part for *bind* is it will return a *currying* function! You can pass the parameters later! 
 
 > There is a very tricky example:
 >
-> ![1544503966647](1544503966647.png)
+> ![1544503966647](imgs/1544503966647.png)
 
 
 
@@ -652,7 +652,7 @@ whatever is returned from the callback function, becomes the new value of the ac
 
 
 
-![1545230183497](1545230183497.png)
+![1545230183497](imgs/1545230183497.png)
 
 
 
@@ -662,7 +662,7 @@ whatever is returned from the callback function, becomes the new value of the ac
 
 ### every
 
-
+return `true` when every element returns `true`
 
 ### splice
 
@@ -685,13 +685,13 @@ The idea behind `slice` is that we need a copy of
 
  To avoid duplication : 
 
-![1544685842788](1544685842788.png)
+![1544685842788](imgs/1544685842788.png)
 
 You can borrow the constructor from another constructor by using call/apply
 
 Diagram to illustrate the relationship between these  relationship: (circle is function; and squares are objects):
 
-  ![1544769025515](1544769025515.png)
+  ![1544769025515](imgs/1544769025515.png)
 
 - Every constructor function has a property on it called  "prototype", which is an object
 - The prototype object has a property on it called "constructor", which points back to the constructor function
@@ -704,7 +704,7 @@ Diagram to illustrate the relationship between these  relationship: (circle is f
 <center>     
     <img style="border-radius: 0.3125em;     
                 box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 				rgba(34,36,38,.08);"      
-         src="1544912638153.png">     
+         src="imgs/1544912638153.png">     
     <br>     
     <div style="color:orange; border-bottom: 1px solid #d9d9d9;     					display: inline-block;     
                 color: #999;     
@@ -712,6 +712,7 @@ Diagram to illustrate the relationship between these  relationship: (circle is f
         How does JavaScript search for properties and methods
     </div> 
 </center>
+
 
 It will look for the property or methods along the `__proto__` and repeat until there is not `__proto__`
 
@@ -750,7 +751,7 @@ However, we have defined the `sayHi` method on `Person`'s `prototype`. `Student`
 
 (recall what `apply` does when `new` keyword was being used and the 4 steps in object creation process)
 
-![ 1544918198561](1544918198561.png)
+![ 1544918198561](imgs/1544918198561.png)
 
 If you did this way, `Person` would be influenced; since then, all new instances of Person will be impacted. Because object is passed by reference! 
 
@@ -1021,6 +1022,17 @@ var sumArguments = (...args) => args.reduce((acc, next) => acc + next);
 
 > **Note that rest and spread cannot convert String to char array!**
 
+You can also `spread` an object:
+
+```javascript
+let instructor = {first:"Yipin", job:"developer"};
+let instructor2 = {...instructor, job:"student"};
+
+//instructor2 => {first:"Yipin", job:"student"}
+```
+
+
+
 
 
 Here is how to use `rest` operator which spreads the value from an array
@@ -1251,10 +1263,6 @@ class Student {
 }
 ```
 
-
-
-
-
 ### Inheritance - `super` and `extends` keywords
 
 It is a syntax sugar for previous `Object.create(someClass.prototype)`
@@ -1426,7 +1434,88 @@ typeof val === "number" && !isNaN(val)
 
 ```
 
-![1545808862044](imgs/1545808862044.png)
 
 
+### `Async` and `await` keywords
+
+The `async` / `await` keywords in ES2017 allow for writing synchronous looking functions that under the hood are asynchronous. 
+
+The purpose of `async` functions is to simplify writing asynchronous code, specifically `Promises`.
+
+> Note that we can combine `async` functions with `Promise.all` to create readable synchronous looking code. 
+
+`await` is a reserved keyword that can only be used inside `async` functions; `await` pause the execution of the `async` function and is followed by a `Promise`. The `awaite` waits for the promise to resolve, and then resumes the `async` function's execution and returns the resolved value. 
+
+> **PS `async` can be used in a object / class.**
+
+`async` can only handle the situation where promise has been resolved. If the promise has been rejected, JavaScript will throw an error. Thus, it is recommended to use `try` and `catch` block.
+
+```javascript
+async function getUser(user){
+  try {
+    var response = await $.getJSON(`https://api.github.com/users/${user}`);
+    console.log(response.name);
+  } catch(e){
+    console.log("User does not exist!");
+  }
+}
+```
+
+
+
+When using `await`, there is a very tricky part. Please see the difference:
+
+```javascript
+// SEQUENTIAL NOT PARALLEL
+async function getMovieData(){
+    var responseOne = await $.getJSON(`https://omdbapi.com?t=titanic&apikey=thewdb`);
+    var responseTwo = await $.getJSON(`https://omdbapi.com?t=shrek&apikey=thewdb`);
+    console.log(responseOne);
+    console.log(responseTwo);
+}
+
+getMovieData();
+
+/* 
+	The second HTTP request does not get made until the first promise is 	resolved, which really slow down our applications.
+*/
+```
+
+ To handle this,  to feel the difference:
+
+```javascript
+// Start the HTTP requests in parallel and then await their resolved promise!
+async function getMovieData(){
+    var titanicPromise = $.getJSON(`https://omdbapi.com?t=titanic&apikey=thewdb`);
+    var shrekPromise = $.getJSON(`https://omdbapi.com?t=shrek&apikey=thewdb`);
+
+    var titanicData = await titanicPromise;
+    var shrekData = await shrekPromise;
+
+    console.log(titanicData);
+    console.log(shrekData);
+}
+
+getMovieData();
+```
+
+
+
+ Or you can combine `async`  with  `Promise.all`
+
+```javascript
+async function getMovieData(first, second){
+    var moviesList = await Promise.all([
+        $.getJSON(`https://omdbapi.com?t=${first}&apikey=thewdb`),
+        $.getJSON(`https://omdbapi.com?t=${second}&apikey=thewdb`) 
+    ]);
+    console.log(moviesList[0].Year);
+    console.log(moviesList[1].Year);
+}
+
+getMovieData('shrek', 'blade'); 
+// 2001
+// 1998
+
+```
 
