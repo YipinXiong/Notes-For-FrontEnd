@@ -1,5 +1,3 @@
-
-
 # Animations
 
 The main difference between :active and :focus is that "focus" is a persistent state, while :active just a moment.
@@ -517,7 +515,31 @@ The most commonly use case of closure is to create private / immutable variable.
 
 > Note that if you wanna maintain an array in a function, do not forget to manipulate the array while return the **array.slice()**. (Copy)  Here is the case: 
 >
-> ![1544491021888](imgs/1544491021888.png)
+
+
+
+```javascript
+function classRoom() {
+    var instructors = ["Elie", "Colt"];
+    return {
+        getInstructors: function() {
+            return instructors.slice();
+        },
+        addInstructor: function(instructor){
+            instructors.push(instructor);
+            return instructors.slice();
+        }
+    }
+}
+
+var coursel=classRoom();
+coursel.getInstructors().pop(); // ["Colt"]
+coursel.getInstructors().pop(); // "Colt"
+coursel.getInstructors(); // ["Colt", "Elie"]
+
+//now instructors is truely private
+
+```
 
 
 
@@ -527,7 +549,13 @@ this  = execution context (an object)
 
 
 
-> ![1544497823024](imgs/1544497823024.png)
+> ```javascript
+> var person = {
+>     firstName: "Yipin",
+>     determineContext: this;
+> }
+> person.determineContext; //window
+> ```
 >
 > The tricky here is that a keyword *this* is defined when a function is run! There is not a function being run here to create a new value of the keyword *this* so the value of *this* is still the *window*!
 
@@ -561,35 +589,107 @@ So, inside a function this will not change.
 
 ##### When do we use 'call'?
 
-> invoked immediately means the function sets the *call* method will be invoked without delay, like theFunction():
+> invoked immediately means the function sets the *call* method will be invoked without delay, like the function():
 >
-> ![1544499000509](imgs/1544499000509.png)
+> ```javascript
+> var person = {
+>     firstName: "Yipin",
+>     sayHi: function(){
+>         return "Hi "+ this.firstName;
+>     },
+>     dog: {
+>         sayHello: function(){
+>             return "Hello "+ this.firstName;
+>         }
+>     }
+> }
+> 
+> person.dog.sayHello.call(person); //"Hello Yipin"
+> ```
+>
+>
 
 
 
-![1544499135616](imgs/1544499135616.png)
+Here, `divs = getElementsByTagName('div')`; it's not an array, but an array-like object.
 
-Here, divs = getElementsByTagName('div'); it's not an array, but an array-like object.
+```javascript
+//To convert the divs into arrary, you can use this
+var convertedArr = [].slice.call(divs);
+```
 
-##### When do we use 'appl	y'?
 
-![1544502327621](imgs/1544502327621.png)
 
-*apply* will help us spread out values if the function only takes individual parameters as parameters.
+
+
+##### When do we use 'apply'?
+
+When a function does not accept an array, `apply` will spread out values in an array for us!
+
+```javascript
+function sumValues(a,b,c) {
+    return a+b+c;
+}
+
+let values = [4,1,2];
+
+sumValues.apply(this, [4,1,2]) //7
+```
+
+
 
 ##### When  do we use 'bind'?
 
-![1544503409727](imgs/1544503409727.png)
+```javascript
+function addNums(a,b,c){
+    return this.first + " just calculated " + (a+b+c);
+}
+var yipin = {
+    first: "Yipin"
+}
+
+var yipinCalc = addNums.bind(yipin, 1, 2); //function () {}
+yipinCal(3); //Yipin just calculated 6
+```
 
 As we demonstrated before, the most different part for *bind* is it will return a *currying* function! You can pass the parameters later! 
 
 > There is a very tricky example:
 >
-> ![1544503966647](imgs/1544503966647.png)
+> ```javascript
+> /*very commonly we lose the context of `this`, but in functions that we do not want to execute right away!*/
+> var yipin = {
+>     firstName: "Yipin",
+>     sayHi: function () {
+>         setTimeout(function(){
+>            console.log("Hi " +this.firstName); 
+>         },1000);
+>     }
+> }
+> yipin.sayHi(); //Hi undefined
+> 
+> ```
+>
+>  use `bind` to set the correct context of `this` :
+>
+> ```javascript
+> 
+> var yipin = {
+>     firstName: "Yipin",
+>     sayHi: function () {
+>         setTimeout(function(){
+>            console.log("Hi " +this.firstName); 
+>         }.bind(this),1000);
+>     }
+> }
+> yipin.sayHi(); //Hi Yipin
+> ```
 
 
 
-#### Why do we use 'strict' mode?
+
+
+#### Why do we use `strict` mode?
 
 to prevent us to creating a global variable unconsciously
 
@@ -685,7 +785,22 @@ The idea behind `slice` is that we need a copy of
 
  To avoid duplication : 
 
-![1544685842788](imgs/1544685842788.png)
+```javascript
+function Car(make, model, year) {
+    this.make =make;
+    this.model = model;
+    this.year = year;
+    this.numWheels = 4;
+}
+
+function Motorcycle(make, model, year){
+    //using call
+    Car.call(this, make, model, year);
+    this.numWheels = 2;
+}
+```
+
+
 
 You can borrow the constructor from another constructor by using call/apply
 
@@ -751,7 +866,17 @@ However, we have defined the `sayHi` method on `Person`'s `prototype`. `Student`
 
 (recall what `apply` does when `new` keyword was being used and the 4 steps in object creation process)
 
-![ 1544918198561](imgs/1544918198561.png)
+```javascript
+function Student(firstName, lastName) {
+    return Person.app(this, arguments);
+}
+
+Student.prototype= Person.prototype;
+var yipin = new Student('Yipin', 'Bear');
+yipin.sayHi(); // "Hello Yipin Bear"
+```
+
+
 
 If you did this way, `Person` would be influenced; since then, all new instances of Person will be impacted. Because object is passed by reference! 
 
@@ -893,7 +1018,7 @@ var instructor = {
 instructor.sayHi(); // "Hello Yipin"
 
 /* 
-	Arrow functions do not have their own keyword this.  The keyword this 		refers to its enclosing context (the instructor object).
+	Arrow functions do not have their own keyword `this`.  The keyword `this` 		refers to its enclosing context (the instructor object).
 	
 	Note that we cannot use arrow function in sayHi property.
 	In the code below, `this` keyword refers to the global context 
@@ -988,7 +1113,7 @@ In this example, <u>`arguments.length` is 1</u> because only one argument was pa
 function printRest(a,b,...c){
     console.log(a);
     console.log(b);
-    console.log(c); //no ... here!!
+    console.log(c); //no `...` here!!
 }
 
 printRest(1,2,3,4,5); 
@@ -1055,7 +1180,7 @@ sumValues(...nums);
 
 > Note 2: There are two restrictions on rest parameters:
 >
-> The first restriction is that there can be only one rest parameter, and the rest parameter must be last
+> The first restriction is that there can be only one rest parameter, and *the `rest` parameter must be last*
 >
 > ```javascript
 > // Syntax error: Can't have a named parameter after rest parameters
@@ -1519,3 +1644,8 @@ getMovieData('shrek', 'blade');
 
 ```
 
+#  D3
+
+D3 is a kind of f ramework that is really similar to jQuery. However, its main function is to visualize the data.  You can manipulate DOM in D3's way.
+
+`d3.select()`
