@@ -4,9 +4,13 @@ The main difference between :active and :focus is that "focus" is a persistent s
 
 ## What's the *transform* doing in CSS3?
 
+```flow
+st=>start: lets you manipulate the coordinate space of the CSS visual formatting model
+op=>operation: TRANSFORM
+e=>end: lets you move, warp, rotate, and scale elements
+op->st->e
 
-
-![1544171980070](imgs/1544171980070.png)
+```
 
 
 
@@ -1674,4 +1678,77 @@ What `.enter()` does is that creates placeholders for the binding data. Then, yo
 2. Grab the exit selection and remove any unnecessary elements (*Remove the elements in the exit selection*)
 3. Grab the enter selection and make any changes unique to that selection (*Make changes to the enter selection*)
 4. Merge the enter and update selections, and make any changes that you want to be shared across both selections. (Merge the enter and update selections and update this combined selection)
+
+
+
+I know it's quite abstract so far so forth. Let's a piece of code from a small application that calculate the frequency of each character in the word you input in a `<input>` tag:
+
+```javascript
+d3.select("form")
+    .on("submit", function() {
+      d3.event.preventDefault();
+      var input = d3.select("input");
+   //get the current value in the <input> tag
+      var text = input.property("value");
+
+    // as I mentioned before, D3 will create or remove 'placeholder' objects depending on the number of entries of data passed in. To dynamically update these 'placeholder', that's the job of .exit(), .enter().
+    
+   //update pattern - step 1 (*Update elements in the update selection*)
+    // that is, .data() consumes the latest data array
+    
+   // Attention: you need to set the key function here to ensure the elements 
+    // are updated by the key(d.character) rather than default index in data
+      var letters = d3.select("#letters")
+                      .selectAll(".letter")
+                      .data(getFrequencies(text), function(d) {
+                        return d.character;
+                      });
+  
+    //update pattern - step 2 (*Remove the elements in the exit selection*)
+      letters
+          .classed("new", false)
+        .exit()
+        .remove();
+
+    //update pattern - step 3 (*Make changes to the enter selection*)
+      letters
+        .enter()
+        .append("div")
+          .classed("letter", true)
+          .classed("new", true)
+    
+    //update pattern - step 4  (Merge the enter and update selections and update this combined selection)
+    // Note that the above code will return a selection! It seems confusing at the begining. 
+        .merge(letters)
+          .style("width", "20px")
+          .style("line-height", "20px")
+          .style("margin-right", "5px")
+          .style("height", function(d) {
+            return d.count * 20 + "px";
+          })
+          .text(function(d) {
+            return d.character;
+          });
+
+      d3.select("#phrase")
+          .text("Analysis of: " + text);
+
+      d3.select("#count")
+          .text("(New characters: " + letters.enter().nodes().length + ")");
+
+      input.property("value", "");
+    });
+
+//get the frequency object
+function getFrequencies(str) {
+  var sorted = str.split("").sort();
+  var data = [];
+  for (var i = 0; i < sorted.length; i++) {
+    var last = data[data.length - 1];
+    if (last && last.character === sorted[i]) last.count++;
+    else data.push({ character: sorted[i], count: 1 });
+  }
+  return data;
+}
+```
 
