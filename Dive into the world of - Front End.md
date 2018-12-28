@@ -1649,3 +1649,29 @@ getMovieData('shrek', 'blade');
 D3 is a kind of f ramework that is really similar to jQuery. However, its main function is to visualize the data.  You can manipulate DOM in D3's way.
 
 `d3.select()`
+
+![1545965301903](imgs/1545965301903.png)
+
+What `.enter()` does is that creates placeholders for the binding data. Then, you always expect to `.append()` elements to the DOM.
+
+`exit()` uses to target elements that do not have data binding on it and should be removed from the DOM. 
+
+> The existence of  `.enter()` and `.exit()` is the result of  data and DOM are independent to each other
+
+![1545969285831](imgs/1545969285831.png)
+
+ Key function is very similar to the concept of `:key` in `vue`; use this function when you wanna update the DOM by the content.
+
+>  By default,  D3 joins elements and data together by ***index*** when you use the data method. In other words, second argument lets you define a key function to specify how elements and data should be joined together. (*This lets you override the default behavior of joining by index.*)
+
+ ![1545972096896](imgs/1545972096896.png)
+
+ `d3.merge()` merges  two `selection`s into one `selection`.
+
+### General Update Pattern
+
+1. Grab the update selection, make any changes unique to that selection, and store the selection in a variable. (*Update elements in the update selection*)
+2. Grab the exit selection and remove any unnecessary elements (*Remove the elements in the exit selection*)
+3. Grab the enter selection and make any changes unique to that selection (*Make changes to the enter selection*)
+4. Merge the enter and update selections, and make any changes that you want to be shared across both selections. (Merge the enter and update selections and update this combined selection)
+
