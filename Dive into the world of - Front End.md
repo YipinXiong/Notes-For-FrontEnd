@@ -946,6 +946,69 @@ app.use（express.static(__dirname + '/views'）
 
 
 
+# DOM
+
+![Image result for document javascript](imgs/windowObjects.png)
+
+
+
+![1546070050215](imgs/1546070050215.png)
+
+The relationship between nodes.
+
+There are some self-explanatory built-in api:
+
+`.insertBefore()`
+
+`.appendChild()`
+
+`.replaceChild()`
+
+`.removeChild()`
+
+`.cloneNode()` //shadow copy
+
+
+
+>  Note that attribute names are case-insensitive, so  “ID” and  “id” are considered the same attribute. Also note that, according to HTML5, custom attributes should be prepended with  data- in order to validate
+
+
+
+## How do we load script dynamically?
+
+```javascript
+function loadScript（url) {
+    let script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = url;
+    document.body.appendChild(script);
+}
+
+//load script dynamically; note that the script will not be loaded until it is appended into the `body` 
+```
+
+Another common method to add script is put code into the `<script>` tag beforehand.
+
+
+
+There are two ways to load CSS styles:
+
+1. `<link>`
+2. `<style>` (createTextNode)
+
+```javascript
+function loadStyles(url) {
+    let link = document.createElement("link");
+    link.ref = "stylesheet";
+    link.type = "text/css";
+    link.href = url;
+    let head = document.getElementsByTagName("head")[0];
+    head.appendChild(link);
+}
+```
+
+
+
 # ES6
 
 ## Main Additions
@@ -1750,5 +1813,172 @@ function getFrequencies(str) {
   }
   return data;
 }
+```
+
+# SVG
+
+Scalable Vector Graphics
+
+SVG can be scalable when zoom in or zoom out. 
+
+`<line>` set start point and end point and stroke-width and stroke-color
+
+`<g>` short for group, combines elements into a group
+
+`<rect>` short for rectangle, four main attributes:
+
+| attribute | explanation                       |
+| --------- | --------------------------------- |
+| x         | x-coordinate of upper-left corner |
+| y         | y-coordinate of upper-left corner |
+| width     | width of rectangle                |
+| height    | height of rectangle               |
+| fill      | inner color                       |
+| stroke    | stroke width and color            |
+| rx        | round corner - x                  |
+| ry        | round corner -y                   |
+
+
+
+`<polygon>`
+
+`points` attribute slate the points of polygon
+
+
+
+`<circle>`
+
+| attribute | explanation            |
+| --------- | ---------------------- |
+| cx        | x-coordinate of center |
+| cy        | y-coordinate of center |
+| r         | radius of circle       |
+
+`<text>`
+
+![1546164162428](imgs/1546164162428.png)
+
+![1546164207439](imgs/1546164207439.png)
+
+You can use CSS properties straightly in the tag.
+
+
+
+`<path>`
+
+You can draw any diagrams by `path` which has several `commands` to use
+
+![1546169683817](imgs/1546169683817.png)
+
+Uppercase vs Lowercase
+
+UPPERCASE X Y - X and Y represent the location you want to go to
+
+lowercase X Y - X and Y represent how far you want to go from your current position
+
+![1546169969209](imgs/1546169969209.png)
+
+![1546170011605](imgs/1546170011605.png)
+
+
+
+How do we combine D3 and SVG
+
+Step 1 : focus on rectangles first.
+
+```javascript
+var width = 800;
+var height = 400;
+var barPadding = 10;
+var svg = d3.select("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+d3.select("#reset")
+    .on("click", function() {
+      d3.selectAll(".letter")
+        .remove();
+
+      d3.select("#phrase")
+          .text("");
+
+      d3.select("#count")
+          .text("");
+    });
+
+d3.select("form")
+    .on("submit", function() {
+      d3.event.preventDefault();
+      var input = d3.select("input");
+      var text = input.property("value");
+      var data = getFrequencies(text);
+      var barWidth = width / data.length - barPadding;
+
+      var letters = svg
+                      .selectAll(".letter")
+                      .data(data, function(d) {
+                        return d.character;
+                      });
+
+      letters
+          .classed("new", false)
+        .exit()
+        .remove();
+
+      var letterEnter = letters
+        .enter()
+        .append("g")
+          .classed("letter", true)
+          .classed("new", true);
+
+      letterEnter.append("rect");
+      letterEnter.append("text");
+
+      letterEnter.merge(letters)
+        .select("rect")
+          .style("width", barWidth)
+          .style("height", function(d) {
+            return d.count * 20;
+          })
+          .attr("x", function(d, i) {
+            return ( barWidth + barPadding) * i;
+          })
+          .attr("y", function(d) {
+            return height - d.count * 20;
+          });
+
+      letterEnter.merge(letters)
+        .select("text")
+          .attr("x", function(d, i) {
+            return ( barWidth + barPadding ) * i + barWidth / 2;
+          })
+          .attr("text-anchor", "middle")
+          .attr("y", function(d) {
+            return height - d.count * 20 - 10;
+          })
+          .text(function(d) {
+            return d.character;
+          });
+
+      d3.select("#phrase")
+          .text("Analysis of: " + text);
+
+      d3.select("#count")
+          .text("(New characters: " + letters.enter().nodes().length + ")");
+
+      input.property("value", "");
+    });
+
+function getFrequencies(str) {
+  var sorted = str.split("").sort();
+  var data = [];
+  for (var i = 0; i < sorted.length; i++) {
+    var last = data[data.length - 1];
+    if (last && last.character === sorted[i]) last.count++;
+    else data.push({ character: sorted[i], count: 1 });
+  }
+  return data;
+}
+
 ```
 
