@@ -16,7 +16,37 @@ React is split into two separate libraries.
 
 
 
+`create-react-app` is the scaffold in React
 
+
+
+## What `webpack` does?
+
+![Diagram-006 - Webpack](imgs/Diagram-006 - Webpack.png)
+
+
+
+## What is React component?
+
+![react-component](imgs/react-component.png)
+
+
+
+## How `React` works behind the scenes
+
+![overview of React](imgs/overview of React.png)
+
+
+
+## Why single `bundle.js` matters
+
+![multiscript](imgs/multiscript.png)
+
+
+
+## JSX return HTML?
+
+Actually, the html returned will be converted using API `React.createElement()`;
 
 
 
