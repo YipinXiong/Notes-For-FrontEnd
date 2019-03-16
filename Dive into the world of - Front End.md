@@ -65,7 +65,7 @@ This allows us to control the speed of transformation. There are four properties
 3. *transition-timing-function*
 4. *transition-delay*
 
-By default, every change is transition. In some cases, we don't want to all changes sharing the same transition-duration. Here comes the *transition-property* : you can assign or point out which property to do the transition. (1, 2 can be combined together one by one):
+By default, every change is transition. In some cases, we don't want to all changes sharing the same *transition-duration*. Here comes the *transition-property* : you can assign or point out which property to do the transition. (1, 2 can be combined together one by one):
 
 ```css
 div {
@@ -483,6 +483,7 @@ As you can see, the recommendation paradigm is a great example to illustrate how
 Automatically transform to json!!
 
 ```javascript
+import axios from 'axios'
 axios.get(url)
 .then(function(res){
     console.log(res.data);
@@ -490,13 +491,28 @@ axios.get(url)
 .catch( function(e){
     console.log(e);
 })
+
+//There two very commonly used settings in axios
+axios.defaults.baseURL = baseURL
+axios.defaults.headers.get['Accepts'] = someInfo;
+axios.defaults.headers.common['Authentorization'] = authEveryHttpReqMethod
+axios.defaults.auth
+
+//add interceptors
+axios.intercepters.request.use(callback)
+axios.intercepters.response.use(callback)
+
+.eject()
+//to throw out the interceptors
 ```
 
 You don't need jQuery if you just wanna use AJAX.
 
 For Axios, there is a params object, you c an append and set RESTful API parameters in the object. 
 
-There is built-in error-handling mechanism in axios err.response and err.request 
+There is built-in error-handling mechanism in `axios` err.response and err.request 
+
+When using `axios` with `vue`, you can set globe settings in `main.js` file!
 
 
 
