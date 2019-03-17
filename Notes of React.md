@@ -104,3 +104,46 @@ const {text, iconName} = seasonConfig[season];
 ```
 
 You can use built-in object literals to lookup corresponding configuration!
+
+
+
+
+
+## default props
+
+```javascript
+Spinner.defaultProps = {
+  message: 'Loading...'
+};
+```
+
+
+
+## A common mistake - *this*
+
+```javascript
+  onFormSubmit (e) {
+    e.preventDefault();
+    console.log(this.state.term);
+  }
+```
+
+when above callback is called, the global `window` will throw an error
+
+- To fix this, you can use `bind(this)` after `this.callbackFunc = callbackFunc.bind(this)` in `constructor`.
+
+- Or **Arrow function** 
+
+```js
+onFormSubmit = (e) => {
+  e.preventDefault();
+  console.log(this.state.term);
+}
+```
+
+- Or `closure`
+
+```html
+<form onSubmit={(event) => onFormSubmit(event)}></form>
+```
+
