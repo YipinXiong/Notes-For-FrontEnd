@@ -83,3 +83,24 @@ This issue comes when we need to use asynchronous apis.
 ## Lifecycle Hooks
 
 ![React-lifecycle-hooks](imgs/React-lifecycle-hooks.png)
+
+
+
+## Tips of combination of `destructuring` and `ternary`
+
+```javascript
+const seasonConfig = {
+  summer: {
+    text: 'Lets hit the beach!',
+    iconName: 'sun'
+  },
+  winter:{
+    text: 'Burr it is chilly',
+    iconName: 'snowflake'
+  }
+};
+
+const {text, iconName} = seasonConfig[season];
+```
+
+You can use built-in object literals to lookup corresponding configuration!
