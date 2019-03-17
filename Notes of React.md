@@ -75,8 +75,11 @@ This issue comes when we need to use asynchronous apis.
 - `State` is a JS object that contains data relevant to a component.
 
 - Updating `state` on a component causes the component to (almost) instantly rerender
-- `State` must be initialized when a component is created
+- `State` must be initialized when a component is created *(`constructor` function)*
 - `State` can **only** be updated using the function `setState`
 
 
 
+## Lifecycle Hooks
+
+![React-lifecycle-hooks](imgs/React-lifecycle-hooks.png)
