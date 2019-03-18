@@ -147,3 +147,31 @@ onFormSubmit = (e) => {
 <form onSubmit={(event) => onFormSubmit(event)}></form>
 ```
 
+
+
+## [ Concise ] Axios - refactor your file structure
+
+```js
+import axios from 'axios';
+
+//set default configuration for specific URL by axios
+export default axios.create({
+  baseURL: "https://api.unsplash.com/",
+  headers: {
+    Authorization: 'pswd'
+  }
+});
+
+----------------------- another file using this api
+
+import unsplash from '../api/unsplash';
+
+onSearchSubmit = async term => {
+  const response =  await unsplash.get("/search/photos", {
+    params: { query: term},
+  });
+
+  this.setState( { images: response.data.results });
+}
+```
+
