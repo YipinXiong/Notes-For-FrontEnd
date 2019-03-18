@@ -175,3 +175,39 @@ onSearchSubmit = async term => {
 }
 ```
 
+
+
+## `Ref` to reference a DOM
+
+As `Vue` does, to get the latest DOM object, you can reference a element in JSX in the `constructor` 
+
+
+
+
+
+# Redux
+
+## What is `Redux`?
+
+State management package - as `Vuex`
+
+
+
+
+
+## Redux Cycle
+
+Learn from an analogy: Insurance Company vs Cycle Terms:
+
+
+
+>  Note that: in terms of Reducers:
+>
+> *Overall goal of reducer is to take some existing data some action and then modify and return that existing data based upon the contents of an action*
+>
+> we prefer: `[...oldList, action.payLoad]` 
+>
+> than `oldList.push(action.payLoad)`
+>
+> that means: Never manipulate on the original object (passed by reference)!!!
+
