@@ -203,7 +203,7 @@ Every form consists of '*type*' and '*payload*'
 
 There is one of instances how the system work behind the scenes:
 
-![analogy underlying mechanism](imgs/analogy-underlying-mechanism.png)
+![analogy-underlying-mechanism](imgs/analogy-underlying-mechanism.png)
 
 >  Note that: in terms of Reducers:
 >
