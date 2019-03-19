@@ -32,7 +32,7 @@ React is split into two separate libraries.
 
 ## How `React` works behind the scenes
 
-![overview of React](imgs/overview of React.png)
+![overview of React](imgs/overview-of-React.png)
 
 
 
@@ -179,13 +179,13 @@ As `Vue` does, to get the latest DOM object, you can reference a element in JSX 
 
 State management package - as `Vuex`
 
-![What is redux](imgs/What is redux.png)
+![What is redux](imgs/What-is-redux.png)
 
 ## Redux Cycle
 
 Learn from an analogy: Insurance Company vs Cycle Terms:
 
-![redux cycle illstration](imgs/redux cycle illstration.png)
+![redux cycle illstration](imgs/redux-cycle-illstration.png)
 
 
 
@@ -197,13 +197,13 @@ There are several key concepts and terms in Redux; to make myself fully understa
 
 Every form consists of '*type*' and '*payload*'
 
-![policy-data structure](imgs/policy-data structure.png)
+![policy-data structure](imgs/policy-data-structure.png)
 
 
 
 There is one of instances how the system work behind the scenes:
 
-![analogy underlying mechanism](imgs/analogy underlying mechanism.png)
+![analogy underlying mechanism](imgs/analogy-underlying-mechanism.png)
 
 >  Note that: in terms of Reducers:
 >
