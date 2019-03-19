@@ -1,6 +1,4 @@
-# Notes of React 
-
-
+# Notes of React
 
 ## JSX
 
@@ -105,10 +103,6 @@ const {text, iconName} = seasonConfig[season];
 
 You can use built-in object literals to lookup corresponding configuration!
 
-
-
-
-
 ## default props
 
 ```javascript
@@ -116,8 +110,6 @@ Spinner.defaultProps = {
   message: 'Loading...'
 };
 ```
-
-
 
 ## A common mistake - *this*
 
@@ -181,25 +173,37 @@ onSearchSubmit = async term => {
 
 As `Vue` does, to get the latest DOM object, you can reference a element in JSX in the `constructor` 
 
-
-
-
-
 # Redux
 
 ## What is `Redux`?
 
 State management package - as `Vuex`
 
-
-
-
+![What is redux](imgs/What is redux.png)
 
 ## Redux Cycle
 
 Learn from an analogy: Insurance Company vs Cycle Terms:
 
+![redux cycle illstration](imgs/redux cycle illstration.png)
 
+
+
+## Analogy - Insurance Company VS Redux
+
+There are several key concepts and terms in Redux; to make myself fully understand these, let's see an analogy:
+
+![analogy-ins.co](imgs/analogy-ins.co.png)
+
+Every form consists of '*type*' and '*payload*'
+
+![policy-data structure](imgs/policy-data structure.png)
+
+
+
+There is one of instances how the system work behind the scenes:
+
+![analogy underlying mechanism](imgs/analogy underlying mechanism.png)
 
 >  Note that: in terms of Reducers:
 >
@@ -210,4 +214,8 @@ Learn from an analogy: Insurance Company vs Cycle Terms:
 > than `oldList.push(action.payLoad)`
 >
 > that means: Never manipulate on the original object (passed by reference)!!!
+
+
+
+`index.js` is the default file `webpack` would try to import if you just appoint a directory
 
