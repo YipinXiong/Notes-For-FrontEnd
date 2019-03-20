@@ -217,5 +217,31 @@ There is one of instances how the system work behind the scenes:
 
 
 
-`index.js` is the default file `webpack` would try to import if you just appoint a directory
+>  `index.js` is the default file `webpack` would try to import if you just appoint a directory
+
+
+
+## Combine React with Redux
+
+>  The demo code for this topic is in the `songs` directory.
+
+![combineReactRedux](../../Downloads/combineReactRedux.png)
+
+
+
+![reduxWorkingFlow](imgs/reduxWorkingFlow.png)
+
+It's our responsibility to create `connect` and `Provider`; in terms of other inner stuff, Redux will do us a favor for us.
+
+`connect` functions is passed a `mapStateToProps` function so that the component receives the data or variables stored in `store`
+
+`connect(mapStateToProps, {..actions})(Component)`
+
+The keys you appointed in the `Redux.combineReducers(key: arrowFunctionHandlingLogic)` will be one of keys in `mapStateToProps(state)`; `state.key1 , state.key2`
+
+
+
+Here is a convention of directory structure:
+
+![recommandedFileStructure](imgs/recommandedFileStructure.png)
 
