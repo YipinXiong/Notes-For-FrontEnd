@@ -1,4 +1,8 @@
-# Notes of React
+[TOC]
+
+
+
+# React
 
 ## JSX
 
@@ -225,7 +229,7 @@ There is one of instances how the system work behind the scenes:
 
 >  The demo code for this topic is in the `songs` directory.
 
-![combineReactRedux](../../Downloads/combineReactRedux.png)
+![combineReactRedux](imgs/combineReactRedux.png)
 
 
 
@@ -245,3 +249,44 @@ Here is a convention of directory structure:
 
 ![recommandedFileStructure](imgs/recommandedFileStructure.png)
 
+
+
+# Redux-thunk
+
+![1553072160757](imgs/1553072160757.png)
+
+`action` must be a plain JavaSript object with `type` property while `async` request will return a `request` object
+
+So, we need `middleware` to help us handle `async`request by relaxing condition that you can return a function in action creators.
+
+![flowChat-of-redux-thunk](imgs/flowChat-of-redux-thunk.png)
+
+
+
+## Middleware
+
+![middlewareInRedux](imgs/middlewareInRedux.png)
+
+
+
+![newReduxCyclewithMiddleware](imgs/newReduxCyclewithMiddleware.png)
+
+### How `thunk` works behind the scenes
+
+![thunkBehindScences](imgs/thunkBehindScences-1553131455858.png)
+
+## Review: Reducers' responsibilities
+
+### Rules of Reduces
+
+![rulesOfReducers](imgs/rulesOfReducers.png)
+
+### Reducers are pure?
+
+This means reducers' responsibility is only one thing: take last `state` and action to determine new `state`.
+
+ ![reducersJob](imgs/reducersJob.png)
+
+
+
+> Keep in mind: we are not going to mutate the `state` ever!
