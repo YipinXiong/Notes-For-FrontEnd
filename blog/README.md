@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+This project demonstrates how to combine `action` within another `action` by ajax request. 
+
 ## Available Scripts
 
 In the project directory, you can run:

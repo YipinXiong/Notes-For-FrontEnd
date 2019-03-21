@@ -306,3 +306,33 @@ This means reducers' responsibility is only one thing: take last `state` and act
 
 ### effetive alternatives to mutate state
 
+
+
+> It's also overkilled to pass a list of users to a component, then find only pieces of data in the list.
+>
+> To solve this problem, you can extract pieces of data in `mapStateToProps`.
+
+
+
+## How to avoid overfetching ajax request?
+
+### _.memoize (not best)
+
+lodash provides us this high order function to cache the result of the passing in function. 
+
+> In computing, *memoization* or memoisation is an optimization technique used primarily to speed up computer programs by storing the results of expensive function calls and returning the cached result when the same inputs occur again. 
+>
+> -- *from Wikipedia*
+
+### chain the requests orderly(recommended method)
+
+```js
+export const fetchPostsAndUsers = () => async (dispatch, getState) => {
+  await dispatch(fetchPosts()); 
+  // the following codes will run after you fecth posts successfully
+  const userIds = _.uniq(_.map(getState().posts, 'userId'));
+ 	// the above line gets a unique array of userIds to promise dispatch the fetchUser only once  
+  userIds.forEach( id => dispatch(fetchUser(id)));
+};
+```
+
