@@ -24,7 +24,7 @@ React is split into two separate libraries.
 
 ## What `webpack` does?
 
-![Diagram-006 - Webpack](imgs/Diagram-006 - Webpack.png)
+![Diagram-006 - Webpack](imgs/webpack.png)
 
 
 
@@ -71,6 +71,10 @@ This issue comes when we need to use asynchronous apis.
 ![timeline-async](imgs/timeline-async.png)
 
 
+
+### Commonly used hooks with calling timings
+
+![commonlyUsedLifeCycleHooks](imgs/commonlyUsedLifeCycleHooks.png)
 
 ## What is `state` in React?
 
@@ -275,11 +279,20 @@ So, we need `middleware` to help us handle `async`request by relaxing condition 
 
 ![thunkBehindScences](imgs/thunkBehindScences-1553131455858.png)
 
-## Review: Reducers' responsibilities
+## Review: Reducers
 
 ### Rules of Reduces
 
 ![rulesOfReducers](imgs/rulesOfReducers.png)
+
+> **Misleading**: 
+>
+> ```javascript
+> // piece of code from redux.js     
+> hasChanged = hasChanged || nextStateForKey !== previousStateForKey
+> ```
+>
+> <u>Through this line, we can tell that `redux` cannot detect mutations made in reducers. (because the same *reference*), which also explains why we also return a new array rather than orginal array.</u>
 
 ### Reducers are pure?
 
@@ -290,3 +303,6 @@ This means reducers' responsibility is only one thing: take last `state` and act
 
 
 > Keep in mind: we are not going to mutate the `state` ever!
+
+### effetive alternatives to mutate state
+
