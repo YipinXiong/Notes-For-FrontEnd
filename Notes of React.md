@@ -336,3 +336,20 @@ export const fetchPostsAndUsers = () => async (dispatch, getState) => {
 };
 ```
 
+
+
+# React-Router
+
+## How does it work?
+
+
+
+# Authentication
+
+## OAuth for Servers vs OAuth for JS Browser Apps
+
+
+
+## How to use google's api in the React?
+
+`window.gapi` offers you `api` which can manipulate in the browser.
