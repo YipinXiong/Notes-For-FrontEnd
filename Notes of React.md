@@ -336,20 +336,34 @@ export const fetchPostsAndUsers = () => async (dispatch, getState) => {
 };
 ```
 
-
-
 # React-Router
 
 ## How does it work?
 
+![flowOfRouter](imgs/flowOfRouter.png)
 
+![mechanismOflink](imgs/mechanismOflink.png)
 
 # Authentication
 
+## What is OAuth?
+
+![OAuth](imgs/OAuth.png)
+
+## What are Scopes?
+
+Grant our right to process or visit your emails or files stored in google drive.
+
 ## OAuth for Servers vs OAuth for JS Browser Apps
 
+![TypesOfAuth](imgs/TypesOfAuth.png)
 
+## The underlying process of login with google.
+
+![underlyingFlowOAuth](imgs/underlyingFlowOAuth.png)
 
 ## How to use google's api in the React?
 
 `window.gapi` offers you `api` which can manipulate in the browser.
+
+[Document of gapi](**developers.google.com/api-client-library/javascript/reference/referencedocs**)
