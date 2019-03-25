@@ -11,6 +11,7 @@ const store = createStore(
   composeEnhancers(applyMiddleware())
 );
 
+
 ReactDOM.render(
   <Provider store = {store}>
     <App />

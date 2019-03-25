@@ -367,3 +367,37 @@ Grant our right to process or visit your emails or files stored in google drive.
 `window.gapi` offers you `api` which can manipulate in the browser.
 
 [Document of gapi](**developers.google.com/api-client-library/javascript/reference/referencedocs**)
+
+
+
+# Redux-Form
+
+## What it does behind the scences?
+
+
+
+```jsx
+  renderInput(formProps) {
+    //this code looks magic but just es6 spread an object of formProps.input
+    return <input {...formProps.input} />
+  }
+
+=============================================================================
+  
+ // by doing this, the form is taken over by redux-form which will prevent the default submission for us and provide us corresponding data.
+
+      <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form">
+        <Field name="title" component={this.renderInput} label="Enter Title"/>
+        <Field name="description" component={this.renderInput} label="Enter Description"/>
+        <button className="ui button primary">Submit</button>
+      </form>
+```
+
+
+
+I am a little bit understanding the `single data flow` in React, that is, data only passing from parent to child through `props`. No magic in redux-form, which just acts like a syntax sugar helping you manage data with redux store. The usage is pretty similar to `redux-react`. You need to combine the form as `connect` does by `reduxForm` imported from `redux-form`. Even the syntax is identical. 
+
+
+
+## Form Validation 
+
