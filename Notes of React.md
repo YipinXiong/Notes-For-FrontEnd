@@ -294,6 +294,12 @@ So, we need `middleware` to help us handle `async`request by relaxing condition 
 >
 > <u>Through this line, we can tell that `redux` cannot detect mutations made in reducers. (because the same *reference*), which also explains why we also return a new array rather than orginal array.</u>
 
+
+
+## Recommanded operation in Reducers
+
+![DesignComparisons](imgs/DesignComparisons.png)
+
 ### Reducers are pure?
 
 This means reducers' responsibility is only one thing: take last `state` and action to determine new `state`.
@@ -374,6 +380,8 @@ Grant our right to process or visit your emails or files stored in google drive.
 
 ## What it does behind the scences?
 
+![ReduxFormDoes](imgs/ReduxFormDoes.png)
+
 
 
 ```jsx
@@ -400,4 +408,30 @@ I am a little bit understanding the `single data flow` in React, that is, data o
 
 
 ## Form Validation 
+
+## Redux-form Validation Flow
+
+![validateFlow](imgs/validateFlow.png)
+
+There is a pattern for form-control in all frameworks:
+
+You need to "*inject* "the package or "*mount*" the package up to the form.
+
+Once the validation package takes over the form, it will change the default behaviors of the form, such as extra valiadation, sanctuation checking etc.. Finally, it will return a object which either contains all validate key value pairs of data or key-value pairs error messages.
+
+# RESTful API
+
+## Conventions
+
+![RESTfulConventions](imgs/RESTfulConventions.png)
+
+## Key Interpolation Syntax - Object-based approach
+
+`{...state, [action.payload.id]: action.payload}`;
+
+set `action.payload.id` as key and the value is `action.payload`
+
+### `mapKeys` - Userful method for object-based search powerd by lodash.
+
+![lodashMapKeys](imgs/lodashMapKeys.png)
 
