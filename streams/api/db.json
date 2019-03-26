@@ -1,20 +1,27 @@
 {
   "streams": [
     {
-      "title": "sad",
-      "description": "fdsfadsfa",
-      "id": 1
-    },
-    {
-      "title": "another stream",
-      "description": "here is a stream",
-      "id": 2
-    },
-    {
       "title": "I create this stream",
       "description": "this was made by me!",
       "userId": "116954603337488355735",
       "id": 3
+    },
+    {
+      "title": "Unexpected Behavior",
+      "description": "Didn'st expect that!!",
+      "userId": "116954603337488355735",
+      "id": 4
+    },
+    {
+      "title": "Programmatic Navigation",
+      "description": "You see!",
+      "id": 5
+    },
+    {
+      "title": "Me streaming Component Reuse",
+      "description": "Reactoring my code",
+      "userId": "116954603337488355735",
+      "id": 6
     }
   ]
 }

@@ -417,7 +417,9 @@ There is a pattern for form-control in all frameworks:
 
 You need to "*inject* "the package or "*mount*" the package up to the form.
 
-Once the validation package takes over the form, it will change the default behaviors of the form, such as extra valiadation, sanctuation checking etc.. Finally, it will return a object which either contains all validate key value pairs of data or key-value pairs error messages.
+Once the validation package takes over the form, it will change the default behaviors of the form, such as extra valiadation, sanctuation checking etc.. Finally, it will return a object which either contains all validate key value pairs of data or key-value pairs error messages. 
+
+Also, form management needs to provide us several *convention* values, such as `initialValues`, `formValues` (current you are editting) etc. To know more details, please refer the document. 
 
 # RESTful API
 
@@ -434,4 +436,34 @@ set `action.payload.id` as key and the value is `action.payload`
 ### `mapKeys` - Userful method for object-based search powerd by lodash.
 
 ![lodashMapKeys](imgs/lodashMapKeys.png)
+
+
+
+## Redirect gracefully
+
+It is inevitable for us to sometimes redirect user to another link after a sucessful operation.
+
+In `React`, it can be really painful if you just pass the `history` object across components. And you cannot control over the behavior of broswer `history` api. To handle the case gracefully, here provides a solution: create your own `history.js`
+
+> `history` was installed automatically by `redux-router`.
+>
+> You can import it by `import {createBrowserHistory} from 'history';`
+>
+> if you wanna customize your history object, you need to update your import {`BrowserRouter`} from `redux-router` to plain `Router` (Not `Route` which is responsible for *routing*!)
+
+> Whenever you need to get some data from `this.props`; 
+>
+> ```js
+> const mapStateToProps = (state, ownProps) => {
+>   //ownProps refers to the props of the instance provided by redux-react
+>   return {stream: state.streams[ownProps.match.params.id]};
+> };
+> 
+> ```
+
+
+
+## Component Isolation with React Router
+
+You can never presume that the data in the store will be dependent on another component. That is, you need to check whether the data is in the store, then handle it.
 

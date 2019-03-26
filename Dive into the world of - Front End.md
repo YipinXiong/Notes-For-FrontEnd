@@ -1735,7 +1735,7 @@ D3 is a kind of f ramework that is really similar to jQuery. However, its main f
 
 ![1545965301903](imgs/1545965301903.png)
 
-What `.enter()` does is that creates placeholders for the binding data. Then, you always expect to `.append()` elements to the DOM.
+What `.enter()` does is creating placeholders for the binding data. Then, you always expect to `.append()` elements to the DOM.
 
 `exit()` uses to target elements that do not have data binding on it and should be removed from the DOM. 
 
