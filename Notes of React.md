@@ -179,7 +179,18 @@ onSearchSubmit = async term => {
 
 ## `Ref` to reference a DOM
 
-As `Vue` does, to get the latest DOM object, you can reference a element in JSX in the `constructor` 
+As `Vue` does, to get the latest DOM object, you can reference a element in JSX in the `constructor`.
+
+> Note that `jsx` is not html or DOM. If you need to collaborate with other package to refence a dom, please add `ref` to the element you need to use!
+
+```jsx
+  constructor(props) {
+    super(props);
+    this.videoRef = React.createRef();
+  }
+
+ <video ref={this.videoRef}/>
+```
 
 # Redux
 
@@ -511,3 +522,10 @@ In JSX, we are supposed to return all contents wrapped by a single wrapper. Some
 In `React`, the path matching process is done by comparing all routes and returns all matching ones. That is the reason why we use `exact` attribute in the <Route>. However, please focus on the route `/streams/new` and `/streams/:id`, they are sharing the same pattern to React. That is, `:id`  just indicates a variable which can be named as a string - "new".  To resolve the route correctly, we introduced `Switch` from `react-route-dom` that will only return one matching result.
 
 > Note that if you notice there are some extra HTML in your component, it might be the result of path matching.
+
+
+
+# Context System in React
+
+## What is it ?
+
