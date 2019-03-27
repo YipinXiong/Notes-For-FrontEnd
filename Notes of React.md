@@ -491,5 +491,23 @@ In JSX, we are supposed to return all contents wrapped by a single wrapper. Some
 
 
 
+## `Switch` from redux-route-dom
 
+```jsx
+<Router history={history}>
+  <div>
+    <Header />
+    <Switch>
+      <Route path="/" exact component={StreamList} />
+      <Route path="/streams/new" exact component={StreamCreate} />
+      <Route path="/streams/edit/:id" exact component={StreamEdit} />
+      <Route path="/streams/delete/:id" exact component={StreamDelete} />
+      <Route path="/streams/:id" exact component={StreamShow} />
+    </Switch>
+  </div>
+</Router>
+```
 
+In `React`, the path matching process is done by comparing all routes and returns all matching ones. That is the reason why we use `exact` attribute in the <Route>. However, please focus on the route `/streams/new` and `/streams/:id`, they are sharing the same pattern to React. That is, `:id`  just indicates a variable which can be named as a string - "new".  To resolve the route correctly, we introduced `Switch` from `react-route-dom` that will only return one matching result.
+
+> Note that if you notice there are some extra HTML in your component, it might be the result of path matching.
