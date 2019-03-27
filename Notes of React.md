@@ -443,7 +443,15 @@ set `action.payload.id` as key and the value is `action.payload`
 
 It is inevitable for us to sometimes redirect user to another link after a sucessful operation.
 
+### Normal `history` working flow
+
+![normalHistory](imgs/normalHistory.png)
+
 In `React`, it can be really painful if you just pass the `history` object across components. And you cannot control over the behavior of broswer `history` api. To handle the case gracefully, here provides a solution: create your own `history.js`
+
+
+
+![customizedHistory](imgs/customizedHistory.png)
 
 > `history` was installed automatically by `redux-router`.
 >
@@ -465,5 +473,23 @@ In `React`, it can be really painful if you just pass the `history` object acros
 
 ## Component Isolation with React Router
 
-You can never presume that the data in the store will be dependent on another component. That is, you need to check whether the data is in the store, then handle it.
+You can never presume that the data in the store will be dependent on another component. That is, you need to check whether the data exists in the store, then handle it.
+
+## Why we use `portal`?
+
+
+
+As I mentioned before, `React` is totally **<u>one direction flow</u>**. It is the normal case that a component is deeply attached to the root component, which is definitely a disastar for css styling. You are prone to be trapped by weird css style, no matter how skillful you are on CSS. To solve this issue, we can mount the component directly on `<body>`. In this way, we can overlap the root component much easier.   
+
+![nestingComponent](imgs/nestingComponent.png)
+
+
+
+## Why we need React.Fragment?
+
+In JSX, we are supposed to return all contents wrapped by a single wrapper. Sometimes we just want to return multiple tags. To solve this, `React.Fragment` comes, which will not be rendered as any tag in the parsed htlm from jsx.
+
+
+
+
 
