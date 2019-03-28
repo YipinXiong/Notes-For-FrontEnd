@@ -1,6 +1,8 @@
-/jsx
+/jsx/node_modules
 
-/components
+/components/node_modules
+
+/translate/node_modules
 
 /streams/api/node_modules
 

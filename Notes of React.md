@@ -529,3 +529,5 @@ In `React`, the path matching process is done by comparing all routes and return
 
 ## What is it ?
 
+[A great thread illustrating Context and Redux](https://blog.bitsrc.io/react-context-api-a-replacement-for-redux-6e20790492b3)
+
