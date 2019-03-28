@@ -254,7 +254,7 @@ It's our responsibility to create `connect` and `Provider`; in terms of other in
 
 `connect` functions is passed a `mapStateToProps` function so that the component receives the data or variables stored in `store`
 
-`connect(mapStateToProps, {..actions})(Component)`
+`connect(mapStateToProps, {...actions})(Component)`
 
 The keys you appointed in the `Redux.combineReducers(key: arrowFunctionHandlingLogic)` will be one of keys in `mapStateToProps(state)`; `state.key1 , state.key2`
 
@@ -530,4 +530,14 @@ In `React`, the path matching process is done by comparing all routes and return
 ## What is it ?
 
 [A great thread illustrating Context and Redux](https://blog.bitsrc.io/react-context-api-a-replacement-for-redux-6e20790492b3)
+
+
+
+## Two ways to inject info in and fetch info out
+
+
+
+
+
+## Redux vs Context
 
