@@ -2,6 +2,8 @@
 
 /components/node_modules
 
+/hooks-simple/node_modules
+
 /translate/node_modules
 
 /streams/api/node_modules

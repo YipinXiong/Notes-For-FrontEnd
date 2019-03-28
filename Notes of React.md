@@ -533,11 +533,52 @@ In `React`, the path matching process is done by comparing all routes and return
 
 
 
-## Two ways to inject info in and fetch info out
-
-
+## Inject info in and fetch info out
 
 
 
 ## Redux vs Context
+
+
+
+
+
+# Review: Hooks
+
+## Class-Based  VS Function-Based 
+
+
+
+> This is a terrible design which will cause endless request!
+
+```jsx
+
+  async componentDidUpdate() {
+    const response = await axios.get(
+      `https://jsonplaceholder.typicode.com/${this.props.resource}`
+    );
+    this.setState({ resources: response.data});
+  }
+
+=========================modification========================================
+  
+  async componentDidUpdate(preProps){
+    if(preProps.resource !== this.props.resource) {
+      const response = await axios.get(
+        `https://jsonplaceholder.typicode.com/${this.props.resource}`
+        );
+      this.setState({ resources: response.data});
+    }
+  }
+```
+
+
+
+## useState
+
+
+
+## useEffect
+
+
 
