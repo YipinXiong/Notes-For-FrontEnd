@@ -531,23 +531,29 @@ In `React`, the path matching process is done by comparing all routes and return
 
 [A great thread illustrating Context and Redux](https://blog.bitsrc.io/react-context-api-a-replacement-for-redux-6e20790492b3)
 
+Nesting Components, it is really inconvenient to pass a data from ancestor component to some child component.
 
+![nestingComponent](imgs/nestingComponent-1553851030599.png)
+
+![ContextDiagram](imgs/ContextDiagram.png)
+
+## Props vs Context
+
+![VsProps](imgs/VsProps.png)
 
 ## Inject info in and fetch info out
 
-
+![twoWayInandOut](imgs/twoWayInandOut.png)
 
 ## Redux vs Context
 
-
-
-
+![ReduxVsContext](imgs/ReduxVsContext.png)
 
 # Review: Hooks
 
 ## Class-Based  VS Function-Based 
 
-
+![shareLogicBetweenCompsHooks](imgs/shareLogicBetweenCompsHooks.png)
 
 > This is a terrible design which will cause endless request!
 
@@ -574,11 +580,15 @@ In `React`, the path matching process is done by comparing all routes and return
 
 
 
-## useState
+## Hooks and their respective function
 
+![HooksAndFunctions](imgs/HooksAndFunctions.png)
 
+### useState
 
-## useEffect
+![useStateApi](imgs/useStateApi.png)
 
+### useEffect
 
+![useEffectWillbeCalledWhenDataChanged](imgs/useEffectWillbeCalledWhenDataChanged.png)
 
