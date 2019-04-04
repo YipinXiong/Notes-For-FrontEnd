@@ -16,8 +16,6 @@ React is split into two separate libraries.
 
 `ReactDOM` knows how to take a component and make it show up in the DOM.
 
-
-
 `create-react-app` is the scaffold in React
 
 
@@ -56,15 +54,21 @@ Actually, the returned "html" will be parsed using API `React.createElement()`;
 
 Functional components just use in the case where you just needs to create a "mixin" as Vue do.
 
+--- update at 4/4/2019----
 
+Functional components do not support lifecycle functions and self-state management. However, these useful functions have corresponding `hooks` as polyfills. 
 
 ## Props
 
 `React` is known as `functional programming` ; as the way `Vue` does, you can pass data from parent component to children components through properties. 
 
-> Note that the concept of `slots` in `Vue` behaves the same as other data type  in `React` `props`; however, you should use fixed keyword `props.children` rather than the customized name.
+> Note that the concept of `slots` in `Vue` behaves the same as other data type in `React` `props`; however, you should use fixed keyword `props.children` rather than the customized name.
 
-## Hooks - Async behind the scenes
+Note: In React, one direction of data flow, which means you can only pass information from parent component to child component. To reference the data stored in parent, say some specific state, you can use `closure` or `currying` by passing a function binded with `this` or just `arrow functions` introduced from ES6.
+
+
+
+## Lifecycle - Async behind the scenes
 
 This issue comes when we need to use asynchronous apis. 
 
@@ -75,6 +79,18 @@ This issue comes when we need to use asynchronous apis.
 ### Commonly used hooks with calling timings
 
 ![commonlyUsedLifeCycleHooks](imgs/commonlyUsedLifeCycleHooks.png)
+
+
+
+-----update 04/04/2019----
+
+Here I find a practical usecase for `shouldComponentUpdate`. Changing one of item in the list while it doesn't cause other items to re-render, which profoundly improve the performance of your app.
+
+[Here is the link of article in Medium](https://medium.freecodecamp.org/react-shouldcomponentupdate-demystified-c5d323099ef6)
+
+[Here is the instance code on github](https://github.com/jpdelima/react-should-component-update-demystified/blob/master/src/App.jsx)
+
+I am going to integrate this into my visual project.
 
 ## What is `state` in React?
 
