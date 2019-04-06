@@ -1,3 +1,7 @@
+
+
+[TOC]
+
 # Animations
 
 The main difference between :active and :focus is that "focus" is a persistent state, while :active just a moment.
@@ -1727,31 +1731,93 @@ getMovieData('shrek', 'blade');
 
 ```
 
-#  D3
+#  D3.js
 
-D3 is a kind of f ramework that is really similar to jQuery. However, its main function is to visualize the data.  You can manipulate DOM in D3's way.
+## Basics
 
-`d3.select()`
+D3 is a kind of framework that is really similar to jQuery. However, its main function is to visualize the data.  You can manipulate DOM in D3's way. All operations you can achieve by vanilla js, but d3 makes life much easier.
 
-![1545965301903](imgs/1545965301903.png)
+What a D3 `select` returns is a `selection` object which behaves like a DOM with useful apis. 
 
-What `.enter()` does is creating placeholders for the binding data. Then, you always expect to `.append()` elements to the DOM.
+> Note that `selection` always returns a new `selection` so that you can chain your operations
 
-`exit()` uses to target elements that do not have data binding on it and should be removed from the DOM. 
+Some basic apis: 
+
+1. selection.style(property [, newValue])
+2. selection.attr(attribute [,newValue])
+3. selection.text([newValue])
+4. selection.html([newValue])
+5. selection.classed(classList, )
+6. selection.append(tagName)
+7. selection.remove(tagName)
+8. selection.on(eventType, callback) 
+
+> Note that there is no default (event) => {}, event here. If you wanna access the event object, you should try `d3.event`!
+
+You can also call the callback function; it will be called by every sub-element.
+
+## Data joins & Enter Selections
+
+![1554546834500](imgs/1554546834500.png)
+
+What `.enter()` does is create **placeholders** for the binding data. Then, you always expect to `.append()` elements to the DOM.
+
+`exit()` uses to target elements that do not have data binding on it and should be removed from the DOM. (It means you'll need to update the data array first)
 
 > The existence of  `.enter()` and `.exit()` is the result of  data and DOM are independent to each other
 
-![1545969285831](imgs/1545969285831.png)
+![1554546872276](imgs/1554546872276.png)
 
- Key function is very similar to the concept of `:key` in `vue`; use this function when you wanna update the DOM by the content.
+## Key function
 
->  By default,  D3 joins elements and data together by ***index*** when you use the data method. In other words, second argument lets you define a key function to specify how elements and data should be joined together. (*This lets you override the default behavior of joining by index.*)
+This is very similar to the concept of `:key` in `vue`; use this function when you wanna update the DOM by the content.
 
- ![1545972096896](imgs/1545972096896.png)
+![1554548046092](imgs/1554548046092.png)
 
- `d3.merge()` merges  two `selection`s into one `selection`.
 
-### General Update Pattern
+
+>  By default,  D3 joins elements and data together by ***index*** when you use the data method. In other words, second argument lets you define a key function to specify how elements and data should be joined together. (*This lets you override the default behavior of joining by index.*) 
+>
+>  Sometimes you use `filter` to filter the data array; then passing a function as the second parameter to specify how elements and data should be joined together.  
+
+
+
+## General Update Pattern
+
+> There is a tricky pitfall: the default `_parent` element is `html`, which indicates if you wanna append a new element the first step is select the parent element.
+>
+> For instance, you wanna join a new `<li>`
+
+
+
+```js
+d3.selectAll("li")
+	.data(data)
+	.append('li')
+		....
+    
+ //  -------------doesn't work--------------
+// you are supposed to select parent first; so the correct way:
+ 
+d3.select("#quote")
+	.selectAll("li")
+```
+
+
+
+### Selection Types
+
+D3 handles `.enter()` , `exit()` and update as three separate groups, which means if you change the style after the .enter(), the change will only affect the new added elements. 
+
+> **This also suggests that you will have three `selections`**
+
+![1554549663559](imgs/1554549663559.png)
+
+### Merging Selection
+
+![1554549704808](imgs/1554549704808.png)
+
+
 
 1. Grab the update selection, make any changes unique to that selection, and store the selection in a variable. (*Update elements in the update selection*)
 2. Grab the exit selection and remove any unnecessary elements (*Remove the elements in the exit selection*)
@@ -1830,6 +1896,8 @@ function getFrequencies(str) {
   return data;
 }
 ```
+
+ `d3.merge()` merges  two `selection`s into one `selection`.
 
 # SVG
 

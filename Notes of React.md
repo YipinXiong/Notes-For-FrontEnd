@@ -36,7 +36,9 @@ React is split into two separate libraries.
 
 ![overview of React](imgs/overview-of-React.png)
 
-
+>Very similar to Vue, React only allows to render one closing tag.
+>
+>From my point of view, this aims to promise the component tree structure so that the diff algorithm works perfectly.
 
 ## Why single `bundle.js` matters
 
