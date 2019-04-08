@@ -1899,7 +1899,7 @@ function getFrequencies(str) {
 
  `d3.merge()` merges  two `selection`s into one `selection`.
 
-# SVG
+## SVG
 
 Scalable Vector Graphics
 
@@ -2066,3 +2066,76 @@ function getFrequencies(str) {
 
 ```
 
+
+
+## Extreme values
+
+![1554631260510](imgs/1554631260510.png)
+
+callback function works as a indicator which tells d3 how the max or min based on which property.
+
+
+
+## Scales
+
+Sometimes, it is annoying that the scale of a chart was too large or too small.
+
+D3 provides us with a great api to set the range of axis. 
+
+![1554632084409](imgs/1554632084409.png)
+
+
+
+## Find Extremes Values
+
+![1554632862223](imgs/1554632862223.png)
+
+## Scatter Plots
+
+```js
+var width = 500;
+var height = 500;
+var padding = 20;
+
+var yScale = d3.scaleLinear()
+               .domain(d3.extent(birthData2011, d => d.lifeExpectancy))
+               .range([height - padding, padding]);
+
+var xScale = d3.scaleLinear()
+               .domain(d3.extent(birthData2011, d => d.births / d.population))
+               .range([padding, width - padding]);
+
+// you can set a color scale based on population density.
+var colorScale = d3.scaleLinear()
+                   .domain(d3.extent(birthData2011, d => d.population / d.area))
+                   .range(['lightgreen', 'black']);
+
+//scale based on the number of births.
+var radiusScale = d3.scaleLinear()
+                    .domain(d3.extent(birthData2011, d => d.births))
+                    .range([2, 40]);
+
+d3.select("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .selectAll("circle")
+  .data(birthData2011)
+  .enter()
+  .append("circle")
+    .attr("cx", d => xScale(d.births / d.population))
+    .attr("cy", d => yScale(d.lifeExpectancy))
+    .attr("fill", d => colorScale(d.population / d.area))
+    .attr("r", d => radiusScale(d.births));
+```
+
+
+
+## Axes & Gridlines
+
+The key idea behind the scene is that using api to create axes then use css to style them (`transform` the position)
+
+![1554634506373](imgs/1554634506373.png)
+
+![1554635141387](imgs/1554635141387.png)
+
+![1554635155846](imgs/1554635155846.png)
