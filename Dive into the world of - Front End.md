@@ -2139,3 +2139,66 @@ The key idea behind the scene is that using api to create axes then use css to s
 ![1554635141387](imgs/1554635141387.png)
 
 ![1554635155846](imgs/1554635155846.png)
+
+```js
+var width = 500;
+var height = 500;
+var padding = 30;
+
+var yScale = d3.scaleLinear()
+               .domain(d3.extent(birthData2011, d => d.lifeExpectancy))
+               .range([height - padding, padding]);
+
+var xScale = d3.scaleLinear()
+               .domain(d3.extent(birthData2011, d => d.births / d.population))
+               .range([padding, width - padding]);
+
+var xAxis = d3.axisBottom(xScale) 
+              .tickSize(-height + 2*padding)
+              .tickSizeOuter(0);
+
+var yAxis = d3.axisLeft(yScale)
+              .tickSize(-width + 2*padding)
+              .tickSizeOuter(0);
+
+d3.select("svg")
+    .append("g")
+    .attr("transform","translate(0," + (height-padding)+ ")")
+    .call(xAxis);
+
+d3.select("svg")
+    .append("g")
+    .attr("transform","translate(" + padding + ", 0)")
+    .call(yAxis);
+
+d3.select("svg")
+  .append("text")
+    .attr("x", width/2)
+    .attr("y", height - padding)
+    .attr("dy", "1.5em")
+    .style("text-anchor", "middle")
+    .text("Births per Capita");
+
+d3.select("svg")
+  .append("text")
+    .attr("x", width/2)
+    .attr("y", padding)
+    .style("font-size", "1.5em")
+    .style("text-anchor", "middle")
+    .style("font-weight", "bold")
+    .text("Data on Births by Country in 2011");
+
+d3.select("svg")
+  .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", -height/2)
+    .attr("y", padding)
+    .attr("dy", "-1.1em")
+    .style("text-anchor", "middle")
+    .text("Life Expectancy")
+```
+
+
+
+## Histogram
+
