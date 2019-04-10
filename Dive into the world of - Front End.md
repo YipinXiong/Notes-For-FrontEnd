@@ -2086,7 +2086,7 @@ D3 provides us with a great api to set the range of axis.
 
 ![1554813861127](imgs/1554813861127.png)
 
-`scale.ticks()` will be used in Histogram's section.
+`scale.ticks()` will be used in Histogram's section. What scale.ticks() returns is an array.
 
 ## Find Extremes Values
 
@@ -2214,6 +2214,8 @@ d3.select("svg")
 
 ![1554813802983](imgs/1554813802983.png)
 
+> Recall the definition of histogram where we need to <u>specify the threshold of each bin</u>; it's **not** specifying the threshold for data itself but for the bin. Because in histogram d3 is assigning each piece of data into pre-defined bin. If you know how to separate bins, you can pass an array full of specific numbers (volume). For instance, if you pass in [9000, 18000, 27000], you will get three bins, that is , (0~9000), (9000~18000), (18000~27000). Or you can just pass a built-in method, axis.ticks() to determine how many bins you have.
+
 
 
 Demo code of dynamic rendering histogram picture:
@@ -2236,10 +2238,12 @@ d3.select("input")
     updateRects(+d3.event.target.value);
   });
 
+// ingredient - x-axis waiting for .call()
 svg.append("g")
     .attr("transform", "translate(0," + (height - padding) + ")")
     .classed("x-axis", true);
 
+// ingredient - y-axis waiting for .call()
 svg.append("g")
     .attr("transform", "translate(" + padding + ", 0)")
     .classed("y-axis", true);
@@ -2264,6 +2268,7 @@ function updateRects(val) {
                  .domain(d3.extent(ageData, d => d.medianAge))
                  .rangeRound([padding, width - padding]);
 
+  // we use thresholds function to maintain the 
   var histogram = d3.histogram()
                     .domain(xScale.domain())
                     .thresholds(xScale.ticks(val))
@@ -2316,5 +2321,150 @@ function updateRects(val) {
 
 ![1554817000260](imgs/1554817000260.png)
 
-You will have several color range schema that were designed for range!!
+You will have several **color range schema** that were designed for range!!
+
+
+
+### Centering the svg
+
+![1554861586006](imgs/1554861586006.png)
+
+if don't do that:
+
+![1554861617096](imgs/1554861617096.png)
+
+
+
+The key concept behind the scene is to convert object data into draw-stroke so that svg can draw it out.
+
+![1554861946423](imgs/1554861946423.png)
+
+
+
+The angle unit here is ***π***
+
+### Helper functions 
+
+![1554862104975](imgs/1554862104975.png)
+
+![1554862127324](imgs/1554862127324.png)
+
+![1554862157117](imgs/1554862157117.png)
+
+![1554862252349](imgs/1554862252349.png)
+
+
+
+Demo code for pie chart - illustrating data by month (outside) and by quarters (inner)
+
+```javascript
+// http://data.un.org/Data.aspx?d=POP&f=tableCode%3a22
+
+var width = 600;
+var height = 600;
+var minYear = d3.min(birthData, d => d.year);
+var maxYear = d3.max(birthData, d => d.year);
+var orderedMonths = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+var colors = [
+  "#aec7e8", "#a7cfc9", "#9fd7a9", "#98df8a", "#bac78e", "#ddb092",
+  "#ff9896", "#ffa48c", "#ffaf82", "#ffbb78", "#e4bf9d", "#c9c3c3"
+];
+
+var quarterColors = ["#1f77b4", "#2ca02c", "#d62728", "#ff7f0e"];
+
+var colorScale = d3.scaleOrdinal()
+           .domain(orderedMonths)
+           .range(colors);
+           
+var svg = d3.select("svg")
+              .attr("width", width)
+              .attr("height", height);
+
+svg
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")")
+    .classed("chart", true);
+
+svg
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")")
+    .classed("inner-chart", true);
+
+svg
+  .append("text")
+    .classed("title", true)
+    .attr("x", width / 2)
+    .attr("y", 30)
+    .style("font-size", "2em")
+    .style("text-anchor", "middle");
+
+drawGraph(minYear);
+
+
+d3.select('input')
+    .property('min', minYear)
+    .property('max', maxYear)
+    .property('value', minYear)
+    .on('input', () => drawGraph(+d3.event.target.value));
+
+function drawGraph(year) {
+  var yearData = birthData.filter(d => d.year === year);
+  var arcs = d3.pie()
+               .value(d => d.births)
+               .sort((a, b) => orderedMonths.indexOf(a.month) - orderedMonths.indexOf(b.month));
+
+  var innerArcs = d3.pie()
+                    .value(d => d.births)
+                    .sort((a, b) => a.quarter - b.quarter);
+
+  var path = d3.arc()
+               .innerRadius(width / 4)
+               .outerRadius(width / 2 - 40);
+
+  var innerPath = d3.arc()
+                    .innerRadius(0)
+                    .outerRadius(width / 4);
+
+  var outer = d3.select(".chart")
+                .selectAll(".arc")
+                .data(arcs(yearData));
+
+  var inner = d3.select(".inner-chart")
+                .selectAll(".arc")
+                .data(innerArcs(getDataByQuarter(yearData)));
+
+  // Since the quarters and months are fixed, there is no need to exit() and remove
+  outer
+    .enter()
+    .append("path")
+      .classed("arc", true)
+      .attr("fill", d => colorScale(d.data.month))
+    .merge(outer)
+      .attr("d", path);
+
+  inner
+    .enter()
+    .append("path")
+      .classed("arc", true)
+      .attr("fill", (d, i) => quarterColors[i])
+    .merge(inner)
+      .attr("d", innerPath);
+
+  d3.select(".title")
+      .text("Births by months and quarter for " + year);
+}
+
+function getDataByQuarter(data) {
+  var quarterTallies = [0, 1, 2, 3].map(n => ({ quarter: n, births: 0 }));
+  for (var i = 0; i < data.length; i++) {
+    var row = data[i];
+    var quarter = Math.floor(orderedMonths.indexOf(row.month) / 3);
+    quarterTallies[quarter].births += row.births;
+  }
+  return quarterTallies;
+}
+```
 
