@@ -2468,3 +2468,77 @@ function getDataByQuarter(data) {
 }
 ```
 
+
+
+## Tooltips
+
+Tooltips is a kind of way to prompt users the meaning of your chart. Most of them are achieved by pure CSS with DOM, adding style *arrow* by pseudo-element **:after** with its border style. Using `.on(mouseover)` event listener to manage the tooltip.
+
+Here is an instance modified from previous Scatter Plots:
+
+```javascript
+//step 1: append tooltip div
+d3.select('body')
+	.append('div')
+	 .classed('tooltip', true)
+
+//step 2: set CSS and opacity starting with 0
+  .tooltips {
+  	opacity:0;
+    position: absolute;
+    //the most important!!
+    pointer-events:none;
+  }
+
+//step 3 add event listener on mouseover
+
+//step 4 style the appended after pseudo class
+```
+
+
+
+## Transition 
+
+`d3.transition()` to create transition
+
+![1554942953331](imgs/1554942953331.png)
+
+You can also set the speed, duration, ease and delay. Please refer to the official document.
+
+Very similar to Vue's transition. There are three *hooks* you can use during the transition:
+
+![1554943153362](imgs/1554943153362.png)
+
+
+
+## Managing Asynchronous Code with D3
+
+> Note that all your asynchronous operations require to run your code on a http server;
+>
+> To do local tests, you can use `npm install -g http-server`. Then run the http-server
+
+`d3.json(url[, callBack(err, data)])`
+
+
+
+![1554944048974](imgs/1554944048974.png)
+
+`formatter` can also be used as filter; only the data satisfying some requirements and being returned will be used in callback.
+
+
+
+### d3.queue
+
+It works really similar to `Promise.all()` 
+
+![1554944210218](imgs/1554944210218.png)
+
+### How to resolve them?
+
+![1554944757866](imgs/1554944757866.png)
+
+## GeoJSON
+
+GeoJSON is a standardized way to encode geographic information.
+
+The most important thing you need to know about GeoJSON is that it has a ***features*** property whose value is an array of objects that encode data about shapes.
