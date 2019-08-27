@@ -30,6 +30,12 @@ React is split into two separate libraries.
 
 ![react-component](imgs/react-component.png)
 
+**All React components must act like pure fuctions with respect to their props.**
+
+> This means that whatever happenning in the function will not modify the original value of ***props*** object.
+
+Of course, application UIs are dynamic and change over time. That's the reason why React introduces a new concept of "state". ***State*** allows React components to change their output over time in response to user actions, network responses, and anything else, without violating this rule.
+
 
 
 ## How `React` works behind the scenes
@@ -129,6 +135,39 @@ const {text, iconName} = seasonConfig[season];
 
 You can use built-in object literals to lookup corresponding configuration!
 
+
+
+## Tips of Inline If with Logical && Operator
+
+```react
+{ unreadMessage > 0 &&	
+    <h2>
+      You have {unreadMessage.length} unread messages.
+    </h2>
+}
+```
+
+Use this pattern rather than use `if` !!! Concise and precise. 
+
+The key point here is to recognize that {} can be used in JSX !!
+
+```js
+render() {
+  const isLoggedIn = this.state.isLoggedIn;
+  return (
+  	<div>
+    	{isLoggedIn? (
+       		<LogoutButton onClick={this.handleLogoutClick} />
+    		) : ( 
+    			<LoginButton onClick = {this.handleLoginClick} />
+  		)}
+    </div>
+  )
+}
+```
+
+
+
 ## default props
 
 ```javascript
@@ -150,6 +189,8 @@ when above callback is called, the global `window` will throw an error
 
 - To fix this, you can use `bind(this)` after `this.callbackFunc = callbackFunc.bind(this)` in `constructor`.
 
+  Using the `bind(this)` in the constructor is the recommended function in the documentation.
+
 - Or **Arrow function** 
 
 ```js
@@ -164,6 +205,8 @@ onFormSubmit = (e) => {
 ```html
 <form onSubmit={(event) => onFormSubmit(event)}></form>
 ```
+
+
 
 
 
@@ -209,6 +252,16 @@ As `Vue` does, to get the latest DOM object, you can reference a element in JSX 
 
  <video ref={this.videoRef}/>
 ```
+
+
+
+## Uncategorized Points
+
+
+
+- Lists and keys: keys used within arrays should be unique among their siblings. However, they don't need to be globally unique.
+
+
 
 # Redux
 

@@ -802,7 +802,7 @@ The idea behind `slice` is that we need a copy of
 
 ##  The function of 'new' key word
 
-- It first creates an empty object
+- It first creates an empty object 
 - It then sets the keyword 'this' to be that empty object
 - It adds the line `return this` to the end of the function, which follows it
 - It adds a property onto the empty object called `__proto__` , which links the prototype property on the constructor function to the empty object
@@ -2537,8 +2537,13 @@ It works really similar to `Promise.all()`
 
 ![1554944757866](imgs/1554944757866.png)
 
-## GeoJSON
+## GeoJSON & TopoJSON
 
 GeoJSON is a standardized way to encode geographic information.
 
 The most important thing you need to know about GeoJSON is that it has a ***features*** property whose value is an array of objects that encode data about shapes.
+
+TopoJSON is the next generation of GeoJSON. You have to convert Topo to Geo by `topojson.feature()` so that d3 can use it directly.
+
+
+
