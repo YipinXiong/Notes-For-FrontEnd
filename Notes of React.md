@@ -176,6 +176,21 @@ Spinner.defaultProps = {
 };
 ```
 
+
+
+## Higher-Order Components
+
+ **a higher-order component is a function that takes a component and returns a new component.**
+
+
+
+## Render Props
+
+The term [“render prop”](https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce) refers to a technique for sharing code between React components using a prop whose value is a function.
+
+
+
+
 ## A common mistake - *this*
 
 ```javascript
@@ -255,11 +270,18 @@ As `Vue` does, to get the latest DOM object, you can reference a element in JSX 
 
 
 
+## Think in React
+
+Now that you have your component hierarchy, it’s time to implement your app. The easiest way is to build a version that takes your data model and renders the UI but has no interactivity. It’s best to decouple these processes because building a static version requires a lot of typing and no thinking, and adding interactivity requires a lot of thinking and not a lot of typing. We’ll see why.
+
+To build a static version of your app that renders your data model, you’ll want to build components that reuse other components and pass data using *props*. *props* are a way of passing data from parent to child. If you’re familiar with the concept of *state*, **don’t use state at all** to build this static version. State is reserved only for interactivity, that is, data that changes over time. Since this is a static version of the app, you don’t need it.
+
 ## Uncategorized Points
 
 
 
 - Lists and keys: keys used within arrays should be unique among their siblings. However, they don't need to be globally unique.
+- In React, data flow is `one-way`, that is, data passed via `props` from parent component to child components. Thus, if you want to synchronize two child components under the same parent component, you should 'store' the state in the parent component. However, how can we call the `this.setState()` in the parent component if the parameters in `setState` from children? In this case, we adopt the strategy propagating the handler functions as `props` which will be consumed in the specific child component.
 
 
 
@@ -561,7 +583,7 @@ You can never presume that the data in the store will be dependent on another co
 
 
 
-As I mentioned before, `React` is totally **<u>one direction flow</u>**. It is the normal case that a component is deeply attached to the root component, which is definitely a disastar for css styling. You are prone to be trapped by weird css style, no matter how skillful you are on CSS. To solve this issue, we can mount the component directly on `<body>`. In this way, we can overlap the root component much easier.   
+As I mentioned before, `React` is totally **<u>one-way flow</u>**. It is the normal case that a component is deeply attached to the root component, which is definitely a disastar for css styling. You are prone to be trapped by weird css style, no matter how skillful you are on CSS. To solve this issue, we can mount the component directly on `<body>`. In this way, we can overlap the root component much easier.   
 
 ![nestingComponent](imgs/nestingComponent.png)
 
@@ -620,9 +642,94 @@ Nesting Components, it is really inconvenient to pass a data from ancestor compo
 
 ![ReduxVsContext](imgs/ReduxVsContext.png)
 
-# Review: Hooks
+# Hooks
 
-## Class-Based  VS Function-Based 
+## Motivation
+
+- It’s hard to reuse stateful logic between components
+
+  Hooks allow you to reuse stateful logic without changing your component hierarchy.
+
+- Complex components become hard to understand
+
+  Hooks let you split one component into smaller functions based on what pieces are related (such as setting up a subscription or fetching data), rather than forcing a split based on lifecycle methods. For example, see how does `setEffect` group related logics from lifecycle functions:
+
+  ```react
+  class FriendStatusWithCounter extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { count: 0, isOnline: null };
+      this.handleStatusChange = this.handleStatusChange.bind(this);
+    }
+  
+    componentDidMount() {
+      document.title = `You clicked ${this.state.count} times`;
+      ChatAPI.subscribeToFriendStatus(
+        this.props.friend.id,
+        this.handleStatusChange
+      );
+    }
+  
+    componentDidUpdate() {
+      document.title = `You clicked ${this.state.count} times`;
+    }
+  
+    componentWillUnmount() {
+      ChatAPI.unsubscribeFromFriendStatus(
+        this.props.friend.id,
+        this.handleStatusChange
+      );
+    }
+  
+    handleStatusChange(status) {
+      this.setState({
+        isOnline: status.isOnline
+      });
+    }
+  ```
+
+  Note how the logic that sets `document.title` is split between `componentDidMount` and `componentDidUpdate`. The subscription logic is also spread between `componentDidMount`and `componentWillUnmount`. And `componentDidMount` contains code for both tasks.
+
+  ```react
+  function FriendStatusWithCounter(props) {
+    const [count, setCount] = useState(0);
+    useEffect(() => {
+      document.title = `You clicked ${count} times`;
+    });
+  
+    const [isOnline, setIsOnline] = useState(null);
+    useEffect(() => {
+      function handleStatusChange(status) {
+        setIsOnline(status.isOnline);
+      }
+  
+      ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);
+      return () => {
+        ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);
+      };
+    });
+    // ...
+  }
+  ```
+
+  **Hooks let us split the code based on what it is doing** rather than a lifecycle method name. React will apply *every* effect used by the component, in the order they were specified.
+
+  
+
+- Classes confuse both people and machines
+
+  You have to understand how `this` works in JavaScript, which is very different from how it works in most languages. You have to remember to bind the event handlers. 
+
+
+
+## ✌️ Rules of Hooks
+
+Hooks are JavaScript functions, but they impose two additional rules:
+
+- Only call Hooks **at the top level**. Don’t call Hooks inside loops, conditions, or nested functions.
+- Only call Hooks **from React function components**. Don’t call Hooks from regular JavaScript functions. (There is just one other valid place to call Hooks — your own custom Hooks).
+
+## Class-Based VS Function-Based 
 
 ![shareLogicBetweenCompsHooks](imgs/shareLogicBetweenCompsHooks.png)
 
@@ -661,5 +768,47 @@ Nesting Components, it is really inconvenient to pass a data from ancestor compo
 
 ### useEffect
 
+You’ve likely performed data fetching, subscriptions, or manually changing the DOM from React components before. These operations are called “side effects” (or “effects” for short) because they can affect other components and can’t be done during rendering.
+
+>  Functional Programming: these operations can change the 'values'
+
+In short: `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` in React classes, are unified into a single API.
+
 ![useEffectWillbeCalledWhenDataChanged](imgs/useEffectWillbeCalledWhenDataChanged.png)
+
+```javascript
+useEffect(() => {
+  document.title = `You clicked ${count} times`;
+}, [count]); // Only re-run the effect if count changes
+
+```
+
+don’t forget that React defers running `useEffect` until after the browser has painted, so doing extra work is less of a problem
+
+#### Effects Without Cleanup
+
+Sometimes, we want to **run some additional code after React has updated the DOM.** Network requests, manual DOM mutations, and logging are common examples of effects that don’t require a cleanup. By default, `useEffect` runs both after the first render *and* after every update. 
+
+The `render` method itself shouldn’t cause side effects, while typically we want to perform our effects *after* React has updated the DOM. This is why in React classes, we put side effects into `componentDidMount` and `componentDidUpdate`.
+
+> You might notice that the function passed to `useEffect` is going to be different on every render. 
+
+#### Effects with Cleanup
+
+**we might want to set up a subscription** to some external data source. In that case, it is important to clean up so that we don’t introduce a memory leak.
+
+If your effect returns a function, React will run it when it is time to clean up.
+
+```javascript
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline);
+    }
+
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);
+    };
+  });
+```
 
