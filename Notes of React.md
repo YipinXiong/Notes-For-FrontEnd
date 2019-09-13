@@ -791,7 +791,25 @@ Sometimes, we want to **run some additional code after React has updated the DOM
 
 The `render` method itself shouldn’t cause side effects, while typically we want to perform our effects *after* React has updated the DOM. This is why in React classes, we put side effects into `componentDidMount` and `componentDidUpdate`.
 
-> You might notice that the function passed to `useEffect` is going to be different on every render. 
+> You might notice that the function passed to `useEffect` is going to be different on every render.
+>
+> If you really wanna achieve the `componentDidMount`, you can pass an empty array as the second argument in `useEffect`.
+>
+> **TL;DR**
+>
+> `useEffect(yourCallback, [])` - will trigger the callback only after the first render.
+>
+> **Detailed explanation**
+>
+> `useEffect` runs by default after **every** render of the component (thus causing an effect).
+>
+> When placing `useEffect` in your component you tell React you want to run the callback as an effect. React will run the effect after rendering and after performing the DOM updates.
+>
+> If you pass only a callback - the callback will run after each render.
+>
+> For example when placing `useEffect(() => console.log('hello'), [someVar, someOtherVar])` - the callback will run after the first render and after any render that one of `someVar` or `someOtherVar` are changed.
+>
+> By passing the second argument an empty array, React will compare after each render the array and will see nothing was changed, thus calling the callback only after the first render.
 
 #### Effects with Cleanup
 
@@ -810,5 +828,41 @@ If your effect returns a function, React will run it when it is time to clean up
       ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);
     };
   });
+```
+
+### useReducer
+
+If you find it annoying to pass callbacks through every level of a component tree, please combine `useReducer` with `useContext` together. The concept of `reducer` is identical in `Redux`, but more lightweight. The solution is to pass the `dispatch`  as the `context` value and then call it in the child components.
+
+```react
+const TodosDispatch = React.createContext(null);
+
+function TodosApp() {
+  // Note: `dispatch` won't change between re-renders
+  const [todos, dispatch] = useReducer(todosReducer);
+
+  return (
+    <TodosDispatch.Provider value={dispatch}>
+      <DeepTree todos={todos} />
+    </TodosDispatch.Provider>
+  );
+}
+```
+
+Any child in the tree inside `TodosApp` can use the `dispatch` function to pass actions up to `TodosApp`:
+
+```react
+function DeepChild(props) {
+  // If we want to perform an action, we can get dispatch from context.
+  const dispatch = useContext(TodosDispatch);
+
+  function handleClick() {
+    dispatch({ type: 'add', text: 'hello' });
+  }
+
+  return (
+    <button onClick={handleClick}>Add todo</button>
+  );
+}
 ```
 
