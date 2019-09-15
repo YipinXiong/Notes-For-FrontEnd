@@ -480,9 +480,205 @@ Grant our right to process or visit your emails or files stored in google drive.
 
 
 
-# Redux-Form
+# Form
 
-## What it does behind the scences?
+There are countless and various senarios where frontend developers need to manipulate inputs from users. In most cases, it’s convenient to <u>have a JavaScript function that handles the submission of the form and has access to the data that the user entered into the form</u>. The standard way to achieve this is with a technique called `controlled component`. The definition of  `controlled compnent` from official React documentation:
+
+> The React component that renders a form also controls what happens in that form on subsequent user input. An input form element whose value is controlled by React in this way is called a “controlled component”
+
+The essence of it is ***the single source of truth***.
+
+> **Single source of truth** (**SSOT**) is the practice of structuring information models and associated [data schema](https://en.wikipedia.org/wiki/Database_schema) such that every data element is mastered (or edited) in only one place. Any possible linkages to this data element are by [reference](https://en.wikipedia.org/wiki/Reference_(computer_science)) only.
+>
+> via Wikipedia
+
+Personal interpretation:  `onSubmit` form and `value` of the input should be placed and controlled by React component within its `state`.
+
+```react
+class Reservation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isGoing: true,
+      numberOfGuests: 2
+    };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+  render() {
+    return (
+      <form>
+        <label>
+          Is going:
+          <input
+            name="isGoing"
+            type="checkbox"
+            checked={this.state.isGoing}
+            onChange={this.handleInputChange} />
+        </label>
+        <br />
+        <label>
+          Number of guests:
+          <input
+            name="numberOfGuests"
+            type="number"
+            value={this.state.numberOfGuests}
+            onChange={this.handleInputChange} />
+        </label>
+      </form>
+    );
+  }
+}
+```
+
+
+
+## Handling Multiple Inputs
+
+When handling multiple controlled `input` elements, you can add a `name` attribute to each element and let the handler function choose what to do based on the value of `event.target.name`.
+
+## Formik
+
+Since handling tedious forms is an annoying task, the React team recommends to use Formik. Formik is a small library that helps you with the 3 most annoying parts:
+
+1. Getting values in and out of form state
+2. Validation and error messages
+3. Handling form submission
+
+### The main logic behind Formik
+
+Formik keeps track of your form's state and then exposes it plus a few reusable methods and event handlers (`handleChange`, `handleBlur`, and `handleSubmit`), which are the most frequently or only used handlers, to your form via `props`. `handleChange` and `handleBlur` work exactly as expected--they use a `name` or `id` attribute to figure out which field to update.
+
+```react
+import React from 'react';
+import { Formik } from 'formik';
+
+const Basic = () => (
+  <div>
+    <h1>Anywhere in your app!</h1>
+    <Formik
+      initialValues={{ email: '', password: '' }}
+      validate={values => {
+        let errors = {};
+        if (!values.email) {
+          errors.email = 'Required';
+        } else if (
+          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+        ) {
+          errors.email = 'Invalid email address';
+        }
+        return errors;
+      }}
+      onSubmit={(values, { setSubmitting }) => {
+        setTimeout(() => {
+          alert(JSON.stringify(values, null, 2));
+          setSubmitting(false);
+        }, 400);
+      }}
+    >
+      {({
+        values,
+        errors,
+        touched,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        isSubmitting,
+        /* and other goodies */
+      }) => (
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            name="email"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.email}
+          />
+          {errors.email && touched.email && errors.email}
+          <input
+            type="password"
+            name="password"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.password}
+          />
+          {errors.password && touched.password && errors.password}
+          <button type="submit" disabled={isSubmitting}>
+            Submit
+          </button>
+        </form>
+      )}
+    </Formik>
+  </div>
+);
+
+export default Basic;
+```
+
+To make your life easier, Formik provides some components. Following code is the same effect as the previous one.
+
+```react
+// Render Prop
+import React from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+
+const Basic = () => (
+  <div>
+    <h1>Any place in your app!</h1>
+    <Formik
+      initialValues={{ email: '', password: '' }}
+      validate={values => {
+        let errors = {};
+        if (!values.email) {
+          errors.email = 'Required';
+        } else if (
+          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+        ) {
+          errors.email = 'Invalid email address';
+        }
+        return errors;
+      }}
+      onSubmit={(values, { setSubmitting }) => {
+        setTimeout(() => {
+          alert(JSON.stringify(values, null, 2));
+          setSubmitting(false);
+        }, 400);
+      }}
+    >
+      {({ isSubmitting }) => (
+        <Form>
+          <Field type="email" name="email" />
+          <ErrorMessage name="email" component="div" />
+          <Field type="password" name="password" />
+          <ErrorMessage name="password" component="div" />
+          <button type="submit" disabled={isSubmitting}>
+            Submit
+          </button>
+        </Form>
+      )}
+    </Formik>
+  </div>
+);
+
+export default Basic;
+```
+
+
+
+## Redux-Form
+
+### What it does behind the scences?
 
 ![ReduxFormDoes](imgs/ReduxFormDoes.png)
 
@@ -511,9 +707,9 @@ I am a little bit understanding the `single data flow` in React, that is, data o
 
 
 
-## Form Validation 
+### Form Validation 
 
-## Redux-form Validation Flow
+#### Redux-form Validation Flow
 
 ![validateFlow](imgs/validateFlow.png)
 
@@ -523,7 +719,7 @@ You need to "*inject* "the package or "*mount*" the package up to the form.
 
 Once the validation package takes over the form, it will change the default behaviors of the form, such as extra valiadation, sanctuation checking etc.. Finally, it will return a object which either contains all validate key value pairs of data or key-value pairs error messages. 
 
-Also, form management needs to provide us several *convention* values, such as `initialValues`, `formValues` (current you are editting) etc. To know more details, please refer the document. 
+Also, form management needs to provide us several *convention* values, such as `initialValues`, `formValues` (current you are editting) etc. To know more details, please refer to the document. 
 
 # RESTful API
 

@@ -482,6 +482,16 @@ As you can see, the recommendation paradigm is a great example to illustrate how
 
 
 
+### CORS
+
+CORS needs both supports from server and browser. Nowadays, almost all browsers support CORS.
+
+The whole process of CORS is done automatically by browser. For developers, there is no difference between CORS and AJAX, which means the codes are identical. Browsers will do developers a favor appending several headers to the requests when your requests are cross-origin. 
+
+Thus, the key to implement CORS is your servers. You can achieve cross-origin request when servers implement the CORS API. 
+
+
+
 #### Axios
 
 Automatically transform to json!!
@@ -510,13 +520,7 @@ axios.intercepters.response.use(callback)
 //to throw out the interceptors
 ```
 
-You don't need jQuery if you just wanna use AJAX.
-
-For Axios, there is a params object, you c an append and set RESTful API parameters in the object. 
-
 There is built-in error-handling mechanism in `axios` err.response and err.request 
-
-When using `axios` with `vue`, you can set globe settings in `main.js` file!
 
 
 
